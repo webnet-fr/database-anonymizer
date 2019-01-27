@@ -12,28 +12,36 @@ use Doctrine\DBAL\DriverManager;
 trait SystemTestTrait
 {
     /**
+     * @param bool $toDatabase
+     *
      * @return \Doctrine\DBAL\Connection
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    private function getConnection()
+    private function getConnection(bool $toDatabase = true)
     {
+        $url = getenv('db_url');
+        if (!$toDatabase) {
+            // get server url without database
+            $url = preg_replace('/\/[^\/]+$/', '', $url);
+        }
+
         $config = new Configuration();
-        $params = ['url' => getenv('db_url')];
+        $params = ['url' => $url];
 
         return DriverManager::getConnection($params, $config);
     }
 
     /**
-     * @param Connection $connection
-     *
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function regenerateDB(Connection $connection)
+    public function regenerateDB()
     {
+        $connection = $this->getConnection(false);
         $regenerateSQL = file_get_contents('tests/System/fixtures/regenerate_db.sql');
 
         $fetchRowsStmt = $connection->prepare($regenerateSQL);
         $fetchRowsStmt->execute();
+        $connection->close();
     }
 }
