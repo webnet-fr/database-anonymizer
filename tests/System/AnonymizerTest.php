@@ -26,7 +26,7 @@ class AnonymizerTest extends TestCase
      */
     protected function setUp()
     {
-        $this->regenerateDB($this->getConnection());
+        $this->regenerateDB();
     }
 
     /**

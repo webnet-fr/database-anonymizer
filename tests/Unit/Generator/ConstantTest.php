@@ -3,6 +3,7 @@
 namespace WebnetFr\DatabaseAnonymizer\Tests\Unit\Generator;
 
 use PHPUnit\Framework\TestCase;
+use WebnetFr\DatabaseAnonymizer\Exception\InvalidConstantException;
 use WebnetFr\DatabaseAnonymizer\Generator\Constant;
 
 /**
@@ -22,5 +23,13 @@ class ConstantTest extends TestCase
         $constantGenerator = new Constant('test string');
         $this->assertEquals($constantGenerator->generate(), 'test string');
         $this->assertEquals($constantGenerator->generate(), 'test string');
+    }
+
+    /**
+     * @expectedException InvalidConstantException
+     */
+    public function throwsExceptionOnInvalidValue()
+    {
+        new Constant(1);
     }
 }

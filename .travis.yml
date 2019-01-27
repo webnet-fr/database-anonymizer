@@ -9,6 +9,8 @@ services:
   - mysql
 
 env:
+  - COMPOSER_FLAGS="--prefer-stable"
+  - COMPOSER_FLAGS="--prefer-lowest"
   - db_url=mysql://root@127.0.0.1/anonymizer
 
 before_install:
@@ -16,7 +18,7 @@ before_install:
   - composer validate
 
 install:
-  - composer install --prefer-dist --no-interaction
+  - composer install --prefer-dist --no-interaction $COMPOSER_FLAGS
 
 script:
   - vendor/bin/phpunit --coverage-clover=coverage.xml
