@@ -8,12 +8,9 @@ php:
 services:
   - mysql
 
-matrix:
-  include:
-    - env: COMPOSER_FLAGS="--prefer-stable"
-      env: db_url=mysql://root@127.0.0.1/anonymizer
-    - env: COMPOSER_FLAGS="--prefer-lowest"
-      env: db_url=mysql://root@127.0.0.1/anonymizer
+env:
+  - COMPOSER_FLAGS="--prefer-stable" db_url=mysql://root@127.0.0.1/anonymizer
+  - COMPOSER_FLAGS="--prefer-lowest" db_url=mysql://root@127.0.0.1/anonymizer
 
 before_install:
   - composer self-update
