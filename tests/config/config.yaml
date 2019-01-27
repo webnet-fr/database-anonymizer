@@ -1,0 +1,22 @@
+webnet_fr_database_anonymizer:
+    defaults:
+        locale: fr_FR
+    tables:
+        user:
+            primary_key: id
+            fields:
+                name:
+                    generator: first_name
+                lastname:
+                    generator: last_name
+                birthdate:
+                    generator: datetime
+                    format: Y-m-d
+                phone:
+                    generator: phone_number
+        order:
+            primary_key: id
+            fields:
+                date:
+                    generator: datetime
+                    format: Y-m-d

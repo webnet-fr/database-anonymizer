@@ -1,0 +1,25 @@
+language: php
+
+php:
+  - 7.1
+  - 7.2
+  - 7.3
+
+services:
+  - mysql
+
+env:
+  - db_url=mysql://root@127.0.0.1/anonymizer
+
+before_install:
+  - composer self-update
+  - composer validate
+
+install:
+  - composer install --prefer-dist --no-interaction
+
+script:
+  - vendor/bin/phpunit --coverage-clover=coverage.xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

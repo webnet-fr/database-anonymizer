@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+use Symfony\Component\Console\Application;
+use WebnetFr\DatabaseAnonymizer\Command\AnonymizeCommand;
+
+set_time_limit(0);
+
+require __DIR__.'/../vendor/autoload.php';
+
+if (!class_exists(Application::class)) {
+    throw new \RuntimeException('You need to add "symfony/console" as a Composer dependency.');
+}
+
+(new Application('Database anonymizer', '0.0.1'))
+    ->add(new AnonymizeCommand())
+    ->getApplication()
+    ->setDefaultCommand('webnet-fr:anonymizer:anonymize', true)
+    ->run();
