@@ -16,6 +16,7 @@ class AddressTest extends TestCase
         $addressProviderMock->method('address')
             ->willReturn('1 rue de Cristallerie');
         $generator = new AddressGenerator($addressProviderMock);
+
         $this->assertEquals('1 rue de Cristallerie', $generator->generate());
     }
 }
