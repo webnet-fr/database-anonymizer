@@ -34,7 +34,7 @@ class AnonymizeCommandTest extends TestCase
         $commandTester->setInputs(array('y'));
         $commandTester->execute([
             'command' => $command->getName(),
-            'config' => realpath('../config/config.yaml'),
+            'config' => realpath(__DIR__.'/../../../../config/config.yaml'),
             '--type' => $GLOBALS['db_type'],
             '--host' => $GLOBALS['db_host'],
             '--port' => $GLOBALS['db_port'],
