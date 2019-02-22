@@ -36,7 +36,7 @@ class ChainGeneratorFactory implements GeneratorFactoryInterface
     /**
      * @inheritdoc
      */
-    public function getGenerator($config): GeneratorInterface
+    public function getGenerator(array $config): GeneratorInterface
     {
         foreach ($this->factories as $factory) {
             try {

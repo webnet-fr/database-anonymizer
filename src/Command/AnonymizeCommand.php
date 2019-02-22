@@ -52,7 +52,6 @@ class AnonymizeCommand extends Command
 
         $generatorFactory = new ChainGeneratorFactory();
         $generatorFactory->addFactory(new ConstantGeneratorFactory())
-            ->addFactory(new DatetimeGeneratorFactory())
             ->addFactory(new FakerGeneratorFactory());
 
         $targetFactory = new TargetFactory($generatorFactory);

@@ -7,6 +7,7 @@ use WebnetFr\DatabaseAnonymizer\Exception\UnsupportedGeneratorException;
 use WebnetFr\DatabaseAnonymizer\Generator\Address;
 use WebnetFr\DatabaseAnonymizer\Generator\City;
 use WebnetFr\DatabaseAnonymizer\Generator\Country;
+use WebnetFr\DatabaseAnonymizer\Generator\DateTime;
 use WebnetFr\DatabaseAnonymizer\Generator\Email;
 use WebnetFr\DatabaseAnonymizer\Generator\FirstName;
 use WebnetFr\DatabaseAnonymizer\Generator\LastName;
@@ -55,6 +56,10 @@ class FakerGeneratorFactory extends Factory implements GeneratorFactoryInterface
             'faker_provider' => 'Internet',
             'generator_class' => Email::class,
         ],
+        'datetime' => [
+            'faker_provider' => 'DateTime',
+            'generator_class' => DateTime::class,
+        ],
         'first_name' => [
             'faker_provider' => 'Person',
             'generator_class' => FirstName::class,
@@ -82,7 +87,7 @@ class FakerGeneratorFactory extends Factory implements GeneratorFactoryInterface
     /**
      * @inheritdoc
      */
-    public function getGenerator($config): GeneratorInterface
+    public function getGenerator(array $config): GeneratorInterface
     {
         $generatorKey = $config['generator'];
         if (!array_key_exists($generatorKey, self::GENERATOR_MAP)) {
@@ -97,6 +102,10 @@ class FakerGeneratorFactory extends Factory implements GeneratorFactoryInterface
         $fakerProviderFQCN = $this->getProviderClassname($fakerProviderName, $locale);
         $fakerProvider = new $fakerProviderFQCN(Factory::create($locale));
 
-        return new $providerFQCN($fakerProvider);
+        if ($config['unique'] ?? false) {
+            $fakerProvider = $fakerProvider->unique();
+        }
+
+        return new $providerFQCN($fakerProvider, $config);
     }
 }

@@ -5,18 +5,40 @@ webnet_fr_database_anonymizer:
         user:
             primary_key: id
             fields:
-                name:
+                email:
+                    generator: email
+                    unique: ~
+                firstname:
                     generator: first_name
                 lastname:
                     generator: last_name
                 birthdate:
                     generator: datetime
                     format: Y-m-d
+                    start: -99 years
+                    end: -18 years
                 phone:
                     generator: phone_number
+                password:
+                    generator: constant
+                    value: pass123
         order:
             primary_key: id
             fields:
-                date:
+                address:
+                    generator: address
+                street_address:
+                    generator: street_address
+                zip_code:
+                    generator: post_code
+                city:
+                    generator: city
+                country:
+                    generator: country
+                comment:
+                    generator: lorem
+                    max_nb_chars: 300
+                created_at:
                     generator: datetime
-                    format: Y-m-d
+                    format: Y-m-d H:i:s
+                    start: -1 month

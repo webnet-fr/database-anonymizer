@@ -2,6 +2,8 @@
 
 namespace WebnetFr\DatabaseAnonymizer\Generator;
 
+use Faker\Provider\DateTime as FakerProviderDateTime;
+
 /**
  * Random datetime.
  *
@@ -9,6 +11,11 @@ namespace WebnetFr\DatabaseAnonymizer\Generator;
  */
 class DateTime implements GeneratorInterface
 {
+    /**
+     * @var FakerProviderDateTime
+     */
+    private $provider;
+
     /**
      * Generated datetime format acceptable by @see date().
      *
@@ -18,11 +25,11 @@ class DateTime implements GeneratorInterface
 
     /**
      * In seconds relative to the beginning of unix epoch.
-     * Defaults to January 1 1970 00:00:00
+     * Defaults to -30 years.
      *
      * @var int
      */
-    private $min;
+    private $start;
 
     /**
      * In seconds relative to the beginning of unix epoch.
@@ -30,60 +37,29 @@ class DateTime implements GeneratorInterface
      *
      * @var int
      */
-    private $max;
+    private $end;
 
     /**
-     * @param string $format
+     * @var string
      */
-    public function __construct(string $format)
-    {
-        $this->format = $format;
-        $this->max = 0;
-        $this->max = time();
-    }
+    private $timezone = null;
 
     /**
-     * Set min
-     *
-     * @param int|\DateTime|string $min
-     *
-     * @return $this
+     * @param FakerProviderDateTime $provider
+     * @param array $config
      */
-    public function setMin($min)
+    public function __construct(FakerProviderDateTime $provider, array $config)
     {
-        if (is_string($min)) {
-            $min = strtotime($min);
-        } elseif ($min instanceof \DateTime) {
-            $min = $min->getTimestamp();
-        } else {
-            throw new \InvalidArgumentException('You must pass integer, parceable string or DateTime object to setMin');
+        $this->provider = $provider;
+
+        $this->format = $config['format'] ?? false;
+        if (!$this->format) {
+            throw new \InvalidArgumentException("You must define 'format' for date generator.");
         }
 
-        $this->min = $min;
-
-        return $this;
-    }
-
-    /**
-     * Set max.
-     *
-     * @param int|\DateTime|string $max
-     *
-     * @return $this
-     */
-    public function setMax($max)
-    {
-        if (is_string($max)) {
-            $max = strtotime($max);
-        } elseif ($max instanceof \DateTime) {
-            $max = $max->getTimestamp();
-        } else {
-            throw new \InvalidArgumentException('You must pass integer, parceable string or DateTime object to setMax');
-        }
-
-        $this->max = $max;
-
-        return $this;
+        $this->start = $config['start'] ?? '-30 years';
+        $this->end = $config['end'] ?? 'now';
+        $this->timezone = $config['timezone'] ?? null;
     }
 
     /**
@@ -91,6 +67,6 @@ class DateTime implements GeneratorInterface
      */
     public function generate()
     {
-        return date($this->format, mt_rand($this->min, $this->max));
+        return $this->provider->dateTimeBetween($this->start, $this->end, $this->timezone)->format($this->format);
     }
 }

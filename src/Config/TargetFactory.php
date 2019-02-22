@@ -7,11 +7,15 @@ use WebnetFr\DatabaseAnonymizer\TargetField;
 use WebnetFr\DatabaseAnonymizer\TargetTable;
 
 /**
+ * Creates targets based on configuration.
+ *
  * @author Vlad Riabchenko <vriabchenko@webnet.fr>
  */
 class TargetFactory
 {
     /**
+     * Creates generator based on configuration.
+     *
      * @var GeneratorFactoryInterface
      */
     private $generatorFactory;
@@ -25,11 +29,23 @@ class TargetFactory
     }
 
     /**
+     * Given configuration returns an array of @see TargetTable. 
+     * 
      * @param array $config
+     * [
+     *     <table name> => [
+     *         'primary_key' => <name of primary key field>,
+     *         'fields' => [
+     *             <field name> => <field config>,
+     *             ...
+     *         ]
+     *     ],
+     *     ...
+     * ]
      *
      * @return TargetTable[]
      */
-    public function createTargets(array $config)
+    public function createTargets(array $config): array
     {
         $targetTables = [];
 

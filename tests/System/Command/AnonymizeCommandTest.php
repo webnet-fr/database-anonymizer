@@ -17,10 +17,15 @@ class AnonymizeCommandTest extends TestCase
 
     /**
      * @inheritdoc
+     * @throws \Doctrine\DBAL\DBALException
      */
     protected function setUp()
     {
-        $this->regenerateDB();
+        preg_match('/^(.*)\/([^\/]+)$/', getenv('db_url'), $matches);
+        $url = $matches[1];
+        $name = $matches[2];
+
+        $this->regenerateUsersOrders($url, $name);
     }
 
     public function testExecute()
@@ -34,25 +39,33 @@ class AnonymizeCommandTest extends TestCase
         $commandTester->execute([
             'command' => $command->getName(),
             'config' => realpath('tests/config/config.yaml'),
-            'db_url' => getenv('db_url'),
+            'db_url' => getenv('db_url')
         ]);
 
-        $connection = $this->getConnection();
+        $connection = $this->getConnection(getenv('db_url'));
 
-        $selectStmt = $connection->prepare('SELECT `name`, `lastname`, `birthdate`, `phone` FROM `user`');
+        $selectStmt = $connection->prepare('SELECT `email`, `firstname`, `lastname`, `birthdate`, `phone`, `password` FROM `user`');
         $selectStmt->execute();
         while ($row = $selectStmt->fetch()) {
-            $this->assertTrue(is_string($row['name']));
+            $this->assertTrue(is_string($row['email']));
+            $this->assertTrue(is_string($row['firstname']));
             $this->assertTrue(is_string($row['lastname']));
             $this->assertTrue(is_string($row['birthdate']));
             $this->assertTrue(is_string($row['phone']));
+            $this->assertTrue(is_string($row['password']));
         }
 
-        $selectStmt = $connection->prepare('SELECT `date` FROM `order`');
+        $selectStmt = $connection->prepare('SELECT `address`, `street_address`, `zip_code`, `city`, `country`, `comment`, `comment`, `created_at` FROM `order`');
         $selectStmt->execute();
 
         while ($row = $selectStmt->fetch()) {
-            $this->assertTrue(is_string($row['date']));
+            $this->assertTrue(is_string($row['address']));
+            $this->assertTrue(is_string($row['street_address']));
+            $this->assertTrue(is_string($row['zip_code']));
+            $this->assertTrue(is_string($row['city']));
+            $this->assertTrue(is_string($row['country']));
+            $this->assertTrue(is_string($row['comment']));
+            $this->assertTrue(is_string($row['created_at']));
         }
     }
 }

@@ -5,7 +5,7 @@ namespace WebnetFr\DatabaseAnonymizer;
 use WebnetFr\DatabaseAnonymizer\Generator\GeneratorInterface;
 
 /**
- * Encapsulates the name of the field within @see TargetTable.
+ * Represents the target field within @see TargetTable.
  * Contains generator for getting random anonymous values.
  *
  * @author Vlad Riabchenko <vriabchenko@webnet.fr>

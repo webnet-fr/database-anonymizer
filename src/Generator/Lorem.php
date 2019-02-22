@@ -19,16 +19,16 @@ class Lorem implements GeneratorInterface
     /**
      * @var int
      */
-    private $maxLength;
+    private $maxNbChars;
 
     /**
      * @param FakerProviderLorem $provider
-     * @param int $maxLength
+     * @param array $config
      */
-    public function __construct(FakerProviderLorem $provider, int $maxLength = 200)
+    public function __construct(FakerProviderLorem $provider, array $config)
     {
         $this->provider = $provider;
-        $this->maxLength = $maxLength;
+        $this->maxNbChars = $config['max_nb_chars'] ?? 200;
     }
 
     /**
@@ -36,6 +36,6 @@ class Lorem implements GeneratorInterface
      */
     public function generate()
     {
-        return $this->provider::text();
+        return $this->provider::text($this->maxNbChars);
     }
 }

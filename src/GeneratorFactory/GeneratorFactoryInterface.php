@@ -13,16 +13,18 @@ interface GeneratorFactoryInterface
 {
     /**
      * Create the generator out of provided configuration.
-     * The configuration contains field name, field type and any other data.
+     * The configuration contains:
+     * - generator: the type of generator to create.
+     * - any other data to configure generator.
      *
      * The factory MUST throw @see \WebnetFr\DatabaseAnonymizer\Exception\UnsupportedGeneratorException
      * if it is impossible to create the generator for provided configuration.
      *
-     * @param mixed $config
+     * @param array $config
      *
      * @return GeneratorInterface
      *
      * @throws \WebnetFr\DatabaseAnonymizer\Exception\UnsupportedGeneratorException
      */
-    public function getGenerator($config): GeneratorInterface;
+    public function getGenerator(array $config): GeneratorInterface;
 }

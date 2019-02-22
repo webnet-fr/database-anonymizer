@@ -35,11 +35,23 @@ trait ConfigurationTrait
                 ->end() // tables
             ->end()
             ->beforeNormalization()
+            // Pass default table configuration to field configuration.
+            // defaults:
+            //        locale: fr_FR
+            //    tables:
+            //        user:
+            //            fields:
+            //                name:
+            //                    generator: first_name
+            //                    # locale fr_FR will be available here.
+            //                lastname:
+            //                    generator: first_name
+            //                    locale: en_EN
+            //                    # locale en_EN overwrites default value fr_FR.
             ->ifTrue(static function ($v) {
                 return is_array($v) && array_key_exists('defaults', $v) && is_array($v['defaults']);
             })
             ->then(static function ($c) {
-                // pass default values to all concerned fields.
                 foreach ($c['tables'] as &$tableConfig) {
                     foreach ($tableConfig['fields'] as &$fieldConfig) {
                         foreach ($c['defaults'] as $defaultKey => $defaultValue) {

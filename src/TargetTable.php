@@ -82,9 +82,10 @@ class TargetTable
     public function getAllFieldNames($quoted = '`'): array
     {
         $fields = [$this->primaryKey];
+        $quote = $quoted ? $quoted : '';
 
         foreach ($this->targetFields as $targetField) {
-            $fields[] = ($quoted ? $quoted: '').$targetField->getName().($quoted ? $quoted: '');
+            $fields[] = $quote.$targetField->getName().$quote;
         }
 
         return $fields;
