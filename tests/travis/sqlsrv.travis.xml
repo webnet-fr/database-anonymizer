@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="../../vendor/autoload.php"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutTodoAnnotatedTests="true"
+         failOnRisky="true"
+         failOnWarning="true"
+>
+    <php>
+        <var name="db_type" value="sqlsrv"/>
+        <var name="db_host" value="127.0.0.1" />
+        <var name="db_username" value="sa" />
+        <var name="db_password" value="anonymizerpass" />
+        <var name="db_name" value="doctrine" />
+        <var name="db_port" value="1433"/>
+    </php>
+
+    <testsuites>
+        <testsuite name="Anonymizer Test Suite">
+            <directory suffix="Test.php">../</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory>../../src</directory>
+        </whitelist>
+    </filter>
+</phpunit>
