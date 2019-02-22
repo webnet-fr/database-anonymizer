@@ -57,7 +57,8 @@ trait SystemTestTrait
         }
 
         $schemaManager->createDatabase($GLOBALS['db_name']);
-        $connection->query('USE '.$GLOBALS['db_name']);
+        $connection->close();
+        $this->getConnection();
 
         $user = $schema->createTable('user');
         $user->addColumn('id', 'integer', ['id' => true, 'unsigned' => true, 'unique']);
