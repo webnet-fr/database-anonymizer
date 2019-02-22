@@ -23,15 +23,17 @@ trait SystemTestTrait
     private function getConnection(bool $toDatabase = true): Connection
     {
         $params = [
-            'driver' => getenv('db_type'),
-            'host' => getenv('db_host'),
-            'user' => getenv('db_username'),
-            'password' => getenv('db_password'),
+            'driver' => $GLOBALS['db_type'],
+            'host' => $GLOBALS['db_host'],
+            'user' => $GLOBALS['db_username'],
+            'password' => $GLOBALS['db_password'],
         ];
 
         if ($toDatabase) {
-            $params += ['dbname' => getenv('db_name')];
+            $params += ['dbname' => $GLOBALS['db_name']];
         }
+
+        var_dump($params);
 
         $config = new Configuration();
 
