@@ -33,8 +33,6 @@ trait SystemTestTrait
             $params += ['dbname' => $GLOBALS['db_name']];
         }
 
-        var_dump($params);
-
         $config = new Configuration();
 
         return DriverManager::getConnection($params, $config);
@@ -53,13 +51,13 @@ trait SystemTestTrait
         $schema = new Schema();
 
         try {
-            $schemaManager->dropDatabase(getenv('db_name'));
+            $schemaManager->dropDatabase($GLOBALS['db_name']);
         } catch (DriverException $e) {
             // If tardet database doesn't exist.
         }
 
-        $schemaManager->createDatabase(getenv('db_name'));
-        $connection->query('USE '.getenv('db_name'));
+        $schemaManager->createDatabase($GLOBALS['db_name']);
+        $connection->query('USE '.$GLOBALS['db_name']);
 
         $user = $schema->createTable('user');
         $user->addColumn('id', 'integer', ['id' => true, 'unsigned' => true, 'unique']);

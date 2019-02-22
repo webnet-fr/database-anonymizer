@@ -32,7 +32,7 @@ do
 
     echo Waiting for SQL Server to start...
 
-    sleep 2s
+    sleep 5s
 done
 
 echo SQL Server started

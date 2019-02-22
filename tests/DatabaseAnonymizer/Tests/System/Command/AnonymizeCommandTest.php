@@ -35,12 +35,12 @@ class AnonymizeCommandTest extends TestCase
         $commandTester->execute([
             'command' => $command->getName(),
             'config' => realpath('../config/config.yaml'),
-            '--type' => getenv('db_type'),
-            '--host' => getenv('db_host'),
-            '--port' => getenv('db_port'),
-            '--database' => getenv('db_name'),
-            '--user' => getenv('db_username'),
-            '--password' => getenv('db_password'),
+            '--type' => $GLOBALS['db_type'],
+            '--host' => $GLOBALS['db_host'],
+            '--port' => $GLOBALS['db_port'],
+            '--database' => $GLOBALS['db_name'],
+            '--user' => $GLOBALS['db_username'],
+            '--password' => $GLOBALS['db_password'],
         ]);
 
         $connection = $this->getConnection();
