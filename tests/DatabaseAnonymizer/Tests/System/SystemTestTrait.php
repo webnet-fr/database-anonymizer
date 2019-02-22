@@ -14,15 +14,25 @@ use Doctrine\DBAL\Schema\Schema;
 trait SystemTestTrait
 {
     /**
-     * @param string $url
+     * @param bool $toDatabase
      *
      * @return Connection
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    private function getConnection(string $url): Connection
+    private function getConnection(bool $toDatabase = true): Connection
     {
-        $params = ['url' => $url];
+        $params = [
+            'driver' => getenv('db_type'),
+            'host' => getenv('db_host'),
+            'user' => getenv('db_username'),
+            'password' => getenv('db_password'),
+        ];
+
+        if ($toDatabase) {
+            $params += ['dbname' => getenv('db_name')];
+        }
+
         $config = new Configuration();
 
         return DriverManager::getConnection($params, $config);
@@ -34,20 +44,20 @@ trait SystemTestTrait
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function regenerateUsersOrders($url, $name): void
+    public function regenerateUsersOrders(): void
     {
-        $connection = $this->getConnection($url);
+        $connection = $this->getConnection(false);
         $schemaManager = $connection->getSchemaManager();
         $schema = new Schema();
 
         try {
-            $schemaManager->dropDatabase($name);
+            $schemaManager->dropDatabase(getenv('db_name'));
         } catch (DriverException $e) {
             // If tardet database doesn't exist.
         }
 
-        $schemaManager->createDatabase($name);
-        $connection->query('USE '.$name);
+        $schemaManager->createDatabase(getenv('db_name'));
+        $connection->query('USE '.getenv('db_name'));
 
         $user = $schema->createTable('user');
         $user->addColumn('id', 'integer', ['id' => true, 'unsigned' => true, 'unique']);

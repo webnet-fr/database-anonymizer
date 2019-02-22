@@ -3,6 +3,7 @@
 namespace WebnetFr\DatabaseAnonymizer\Command;
 
 use Doctrine\DBAL\Configuration as DoctrineDBALConfiguration;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
@@ -17,13 +18,14 @@ use WebnetFr\DatabaseAnonymizer\Config\YamlAnonymizerLoader;
 trait AnonymizeCommandTrait
 {
     /**
-     * @param string $dbUrl
+     * @param array $params
      *
-     * @return \Doctrine\DBAL\Connection
+     * @return Connection
+     *
+     * @throws \Doctrine\DBAL\DBALException
      */
-    protected function getConnection($dbUrl)
+    protected function getConnection(array $params): Connection
     {
-        $params = ['url' => $dbUrl];
         $config = new DoctrineDBALConfiguration();
 
         return DriverManager::getConnection($params, $config);

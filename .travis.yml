@@ -1,29 +1,28 @@
 language: php
 
-php:
-  - 7.1
-  - 7.2
-  - 7.3
+jobs:
+  include:
 
-services:
-  - mysql
-  - postgresql
-
-env:
-  - COMPOSER_FLAGS="--prefer-stable" db_url=mysql://root@127.0.0.1/anonymizer
-  - COMPOSER_FLAGS="--prefer-lowest" db_url=mysql://root@127.0.0.1/anonymizer
-  - COMPOSER_FLAGS="--prefer-stable" db_url="pgsql:user=postgres dbname=anonymizer"
-  - COMPOSER_FLAGS="--prefer-lowest" db_url="pgsql:user=postgres dbname=anonymizer"
+    - stage: Test
+      php: 7.1
+      env: DB=mysql
+    - stage: Test
+      php: 7.1
+      env: DB=pgsql POSTGRESQL_VERSION=9.2 COVERAGE=yes
+      services:
+        - postgresql
+      addons:
+        postgresql: "9.2"
 
 before_install:
   - composer self-update
   - composer validate
 
 install:
-  - composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
+  - composer update --prefer-dist --no-interaction
 
 script:
-  - vendor/bin/phpunit --coverage-clover=coverage.xml
+  - ./vendor/bin/phpunit --configuration tests/travis/$DB.travis.xml --coverage-clover clover.xml
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

@@ -32,7 +32,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "WebnetFr\\DatabaseAnonymizer\\Tests\\": "tests"
+            "WebnetFr\\DatabaseAnonymizer\\Tests\\": "tests/DatabaseAnonymizer/Tests"
         }
     }
 }

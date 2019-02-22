@@ -28,11 +28,7 @@ class AnonymizerTest extends TestCase
      */
     protected function setUp()
     {
-        preg_match('/^(.*)\/([^\/]+)$/', getenv('db_url'), $matches);
-        $url = $matches[1];
-        $name = $matches[2];
-
-        $this->regenerateUsersOrders($url, $name);
+        $this->regenerateUsersOrders();
     }
 
     /**
@@ -47,7 +43,7 @@ class AnonymizerTest extends TestCase
         $targetFields[] = new TargetField('phone', new PhoneNumber(new FakerProviderPhoneNumber($faker)));
         $targets[] = new TargetTable('user', 'id', $targetFields);
 
-        $connection = $this->getConnection(getenv('db_url'));
+        $connection = $this->getConnection();
         $anonymizer = new Anonymizer();
         $anonymizer->anonymize($connection, $targets);
 

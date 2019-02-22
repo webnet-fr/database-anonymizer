@@ -21,11 +21,7 @@ class AnonymizeCommandTest extends TestCase
      */
     protected function setUp()
     {
-        preg_match('/^(.*)\/([^\/]+)$/', getenv('db_url'), $matches);
-        $url = $matches[1];
-        $name = $matches[2];
-
-        $this->regenerateUsersOrders($url, $name);
+        $this->regenerateUsersOrders();
     }
 
     public function testExecute()
@@ -38,11 +34,16 @@ class AnonymizeCommandTest extends TestCase
         $commandTester->setInputs(array('y'));
         $commandTester->execute([
             'command' => $command->getName(),
-            'config' => realpath('tests/config/config.yaml'),
-            'db_url' => getenv('db_url')
+            'config' => realpath('../config/config.yaml'),
+            '--type' => getenv('db_type'),
+            '--host' => getenv('db_host'),
+            '--port' => getenv('db_port'),
+            '--database' => getenv('db_name'),
+            '--user' => getenv('db_username'),
+            '--password' => getenv('db_password'),
         ]);
 
-        $connection = $this->getConnection(getenv('db_url'));
+        $connection = $this->getConnection();
 
         $selectStmt = $connection->prepare('SELECT `email`, `firstname`, `lastname`, `birthdate`, `phone`, `password` FROM `user`');
         $selectStmt->execute();
