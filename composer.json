@@ -34,5 +34,9 @@
         "psr-4": {
             "WebnetFr\\DatabaseAnonymizer\\Tests\\": "tests/DatabaseAnonymizer/Tests"
         }
+    },
+    "bin": ["bin/database-anonymizer"],
+    "config": {
+        "sort-packages": true
     }
 }
