@@ -51,7 +51,7 @@ trait SystemTestTrait
 
         try {
             $schemaManager->dropDatabase($GLOBALS['db_name']);
-        } catch (DriverException $e) {
+        } catch (\Exception $e) {
             // If tardet database doesn't exist.
         }
 
