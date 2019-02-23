@@ -2,7 +2,7 @@ webnet_fr_database_anonymizer:
     defaults:
         locale: fr_FR
     tables:
-        user:
+        users:
             primary_key: id
             fields:
                 email:
@@ -22,7 +22,7 @@ webnet_fr_database_anonymizer:
                 password:
                     generator: constant
                     value: pass123
-        order:
+        orders:
             primary_key: id
             fields:
                 address:

@@ -41,14 +41,20 @@ class AnonymizerTest extends TestCase
         $targetFields[] = new TargetField('lastname', new LastName(new Person($faker)));
         $targetFields[] = new TargetField('birthdate', new DateTime(new FakerProviderDateTime($faker), ['format' => 'Y-m-d']));
         $targetFields[] = new TargetField('phone', new PhoneNumber(new FakerProviderPhoneNumber($faker)));
-        $targets[] = new TargetTable('user', 'id', $targetFields);
+        $targets[] = new TargetTable('users', 'id', $targetFields);
 
         $connection = $this->getConnection();
         $anonymizer = new Anonymizer();
         $anonymizer->anonymize($connection, $targets);
 
-        $selectStmt = $connection->prepare('SELECT `firstname`, `lastname`, `birthdate`, `phone` FROM `user`');
+        $selectSQL = $connection->createQueryBuilder()
+            ->select('u.firstname, u.lastname, u.birthdate, u.phone')
+            ->from('users', 'u')
+            ->getSQL();
+
+        $selectStmt = $connection->prepare($selectSQL);
         $selectStmt->execute();
+
         while ($row = $selectStmt->fetch()) {
             $this->assertTrue(is_string($row['firstname']));
             $this->assertTrue(is_string($row['lastname']));

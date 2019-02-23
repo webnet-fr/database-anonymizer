@@ -45,8 +45,13 @@ class AnonymizeCommandTest extends TestCase
 
         $connection = $this->getConnection();
 
-        $selectStmt = $connection->prepare('SELECT `email`, `firstname`, `lastname`, `birthdate`, `phone`, `password` FROM `user`');
+        $selectSQL = $connection->createQueryBuilder()
+            ->select('email, firstname, lastname, birthdate, phone, password')
+            ->from('users')
+            ->getSQL();
+        $selectStmt = $connection->prepare($selectSQL);
         $selectStmt->execute();
+
         while ($row = $selectStmt->fetch()) {
             $this->assertTrue(is_string($row['email']));
             $this->assertTrue(is_string($row['firstname']));
@@ -56,7 +61,11 @@ class AnonymizeCommandTest extends TestCase
             $this->assertTrue(is_string($row['password']));
         }
 
-        $selectStmt = $connection->prepare('SELECT `address`, `street_address`, `zip_code`, `city`, `country`, `comment`, `comment`, `created_at` FROM `order`');
+        $selectSQL = $connection->createQueryBuilder()
+            ->select('address, street_address, zip_code, city, country, comment, comment, created_at')
+            ->from('orders')
+            ->getSQL();
+        $selectStmt = $connection->prepare($selectSQL);
         $selectStmt->execute();
 
         while ($row = $selectStmt->fetch()) {

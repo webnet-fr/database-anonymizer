@@ -76,16 +76,14 @@ class TargetTable
     /**
      * Get the names of all known fields.
      *
-     * @param string $quoted
      * @return string[]
      */
-    public function getAllFieldNames($quoted = '`'): array
+    public function getAllFieldNames(): array
     {
         $fields = [$this->primaryKey];
-        $quote = $quoted ? $quoted : '';
 
         foreach ($this->targetFields as $targetField) {
-            $fields[] = $quote.$targetField->getName().$quote;
+            $fields[] = $targetField->getName();
         }
 
         return $fields;

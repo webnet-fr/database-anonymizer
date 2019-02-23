@@ -2,7 +2,7 @@
 
 namespace WebnetFr\DatabaseAnonymizer;
 
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use WebnetFr\DatabaseAnonymizer\Exception\InvalidAnonymousValueException;
 
 /**
@@ -26,25 +26,16 @@ class Anonymizer
 
             // Select all rows form current table:
             // SELECT <all target fields> FROM <target table>
-            $fetchRowsSQL = sprintf('SELECT %s FROM `%s`', join(',', $allFieldNames), $targetTable->getName());
+            $fetchRowsSQL = $connection->createQueryBuilder()
+                ->select(join(',', $allFieldNames))
+                ->from($targetTable->getName())
+                ->getSQL();
             $fetchRowsStmt = $connection->prepare($fetchRowsSQL);
             $fetchRowsStmt->execute();
 
-            $updateFields = [];
-            foreach ($targetTable->getTargetFields() as $targetField) {
-                // <field_name>=:<field_name>
-                $updateFields[] = '`'.$targetField->getName().'`=:'.$targetField->getName();
-            }
-
-            // UPDATE <table name> SET [<field_name=:field_name>] WHERE <pk>=:<pk>
-            $updateSQL = sprintf('UPDATE `%s` SET %s WHERE `%s`=:%s', $targetTable->getName(), join(',', $updateFields), $pk, $pk);
-            $updateStmt = $connection->prepare($updateSQL);
-
             // Anonymize all rows in current target table.
             while ($row = $fetchRowsStmt->fetch()) {
-                // set primary key for row to update
-                $updateStmt->bindValue($pk, $row[$pk]);
-
+                $values = [];
                 // Anonymize all target fields in current row.
                 foreach ($targetTable->getTargetFields() as $targetField) {
                     $anonValue = $targetField->generate();
@@ -54,11 +45,10 @@ class Anonymizer
                     }
 
                     // Set anonymized value.
-                    $updateStmt->bindValue($targetField->getName(), $anonValue);
+                    $values[$targetField->getName()] =  $anonValue;
                 }
 
-                // Update row.
-                $updateStmt->execute();
+                $connection->update($targetTable->getName(), $values, [$pk => $row[$pk]]);
             }
         }
     }

@@ -48,7 +48,6 @@ trait SystemTestTrait
     {
         $connection = $this->getConnection(false);
         $schemaManager = $connection->getSchemaManager();
-        $schema = new Schema();
 
         try {
             $schemaManager->dropDatabase($GLOBALS['db_name']);
@@ -58,9 +57,12 @@ trait SystemTestTrait
 
         $schemaManager->createDatabase($GLOBALS['db_name']);
         $connection->close();
-        $this->getConnection();
 
-        $user = $schema->createTable('user');
+        $connection = $this->getConnection();
+        $schemaManager = $connection->getSchemaManager();
+        $schema = $schemaManager->createSchema();
+
+        $user = $schema->createTable('users');
         $user->addColumn('id', 'integer', ['id' => true, 'unsigned' => true, 'unique']);
         $user->addColumn('email', 'string', ['length' => 256, 'notnull' => false]);
         $user->addColumn('firstname', 'string', ['length' => 256, 'notnull' => false]);
@@ -71,7 +73,7 @@ trait SystemTestTrait
         $user->setPrimaryKey(['id']);
         $schemaManager->createTable($user);
 
-        $order = $schema->createTable('order');
+        $order = $schema->createTable('orders');
         $order->addColumn('id', 'integer', ['unsigned' => true]);
         $order->addColumn('address', 'string', ['length' => 256, 'notnull' => false]);
         $order->addColumn('street_address', 'string', ['length' => 64, 'notnull' => false]);
@@ -85,19 +87,19 @@ trait SystemTestTrait
         $order->addForeignKeyConstraint($user, ['user_id'], ['id']);
         $schemaManager->createTable($order);
 
-        $userData = [];
         foreach (range(1, 10) as $i) {
-            $userData[] = "($i)";
+            $connection->createQueryBuilder()
+                ->insert('users')
+                ->values(['id' => $i])
+                ->execute();
         }
-        $userDataStmt = $connection->prepare('INSERT INTO `user` (`id`) VALUES '.join(',', $userData));
-        $userDataStmt->execute();
 
-        $orderData = [];
         foreach (range(1, 20) as $i) {
-            $orderData[] = sprintf('(%d, %d)', $i, mt_rand(1, 10));
+            $connection->createQueryBuilder()
+                ->insert('orders')
+                ->values(['id' => $i, 'user_id' => mt_rand(1, 10)])
+                ->execute();
         }
-        $orderDataStmt = $connection->prepare('INSERT INTO `order` (`id`, `user_id`) VALUES '.join(',', $orderData).';');
-        $orderDataStmt->execute();
 
         $connection->close();
     }
