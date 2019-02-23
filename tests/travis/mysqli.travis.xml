@@ -8,12 +8,12 @@
          failOnWarning="true"
 >
     <php>
-        <var name="db_type" value="pdo_pgsql"/>
+        <var name="db_type" value="mysqli"/>
         <var name="db_host" value="localhost" />
-        <var name="db_username" value="postgres" />
+        <var name="db_username" value="travis" />
         <var name="db_password" value="" />
         <var name="db_name" value="anonymizer" />
-        <var name="db_port" value="5432"/>
+        <var name="db_port" value="3306"/>
     </php>
 
     <testsuites>
