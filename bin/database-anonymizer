@@ -6,7 +6,14 @@ use WebnetFr\DatabaseAnonymizer\Command\AnonymizeCommand;
 
 set_time_limit(0);
 
-require __DIR__.'/../autoload.php';
+$files = [__DIR__.'/../vendor/autoload.php', __DIR__.'/../../../autoload.php'];
+foreach ($files as $file) {
+    if (file_exists($file)) {
+        $loader = require $file;
+
+        break;
+    }
+}
 
 if (!class_exists(Application::class)) {
     throw new \RuntimeException('You need to add "symfony/console" as a Composer dependency.');
