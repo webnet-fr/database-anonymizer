@@ -9,5 +9,5 @@ RUN php composer-setup.php --install-dir=bin --filename=composer
 RUN php -r "unlink('composer-setup.php');"
 
 RUN mkdir /var/www/anonymizer
-WORKDIR cd /var/www/anonymizer
+WORKDIR /var/www/anonymizer
 RUN composer require webnet-fr/database-anonymizer:master-dev
