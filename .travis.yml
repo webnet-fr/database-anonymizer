@@ -24,33 +24,33 @@ jobs:
       env: DB=mysqli
     - php: 7.2
       env: DB=mysqli
-    - php: 7.3
-      env: DB=mysqli
 
     - php: 7.1
       env: DB=mysql
-#    - php: 7.2
-#      env: DB=mysql
-#    - php: 7.3
-#      env: DB=mysql
+    - php: 7.2
+      env: DB=mysql
+
     - php: 7.1
       env: DB=pgsql POSTGRESQL_VERSION=9.2
       services:
         - postgresql
       addons:
         postgresql: "9.2"
-#    - php: 7.2
-#      env: DB=pgsql POSTGRESQL_VERSION=9.2
-#      services:
-#        - postgresql
-#      addons:
-#        postgresql: "9.2"
-#    - php: 7.3
-#      env: DB=pgsql POSTGRESQL_VERSION=9.2
-#      services:
-#        - postgresql
-#      addons:
-#        postgresql: "9.2"
+    - php: 7.2
+      env: DB=pgsql POSTGRESQL_VERSION=9.2
+      services:
+        - postgresql
+      addons:
+        postgresql: "9.2"
+
+    - php: 7.1
+      env: DB=sqlsrv
+      sudo: required
+      services:
+        - docker
+      before_script:
+        - bash ./tests/travis/install-mssql-sqlsrv.sh
+        - bash ./tests/travis/install-mssql.sh
     - php: 7.2
       env: DB=sqlsrv
       sudo: required
@@ -59,20 +59,3 @@ jobs:
       before_script:
         - bash ./tests/travis/install-mssql-sqlsrv.sh
         - bash ./tests/travis/install-mssql.sh
-#    - php: 7.2
-#      env: DB=sqlsrv
-#      sudo: required
-#      services:
-#        - docker
-#      before_script:
-#        - bash ./tests/travis/install-mssql-sqlsrv.sh
-#        - bash ./tests/travis/install-mssql.sh
-#    - php: 7.3
-#      env: DB=sqlsrv
-#      sudo: required
-#      services:
-#        - docker
-#      before_script:
-#        - bash ./tests/travis/install-mssql-sqlsrv.sh
-#        - bash ./tests/travis/install-mssql.sh
-

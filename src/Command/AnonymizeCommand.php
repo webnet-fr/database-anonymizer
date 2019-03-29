@@ -51,12 +51,21 @@ class AnonymizeCommand extends Command
         $questionHelper = $this->getHelper('question');
         $question = new ConfirmationQuestion('Are you sure you want to anonymize your database?', false);
 
-        if (!$questionHelper->ask($input, $output, $question)) {
+        if (!$input->getOption('no-interaction') && !$questionHelper->ask($input, $output, $question)) {
             return;
         }
 
+        $configFile = $input->getArgument('config');
         $configFilePath = realpath($input->getArgument('config'));
+        if (!is_file($configFilePath)) {
+            $output->writeln(sprintf('<error>Configuration file "%s" does not exist.</error>', $configFile));
+
+            return;
+        }
+
         $config = $this->getConfigFromFile($configFilePath);
+
+        var_dump($config);
 
         $generatorFactory = new ChainGeneratorFactory();
         $generatorFactory->addFactory(new ConstantGeneratorFactory())

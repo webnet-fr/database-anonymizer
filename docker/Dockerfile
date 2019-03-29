@@ -10,4 +10,4 @@ RUN php -r "unlink('composer-setup.php');"
 
 RUN mkdir /var/www/anonymizer
 WORKDIR /var/www/anonymizer
-RUN composer require webnet-fr/database-anonymizer:master-dev
+RUN composer require webnet-fr/database-anonymizer:master-dev symfony/console symfony/config symfony/yaml
