@@ -6,19 +6,23 @@
 
 ### Use Docker
 
-Place a [docker/Dockerfile] in empty folder and create anonymizer configuration 
-in, say, `config.yaml`.
+1. Place a [docker/Dockerfile] in empty folder. Delete unnecessary extension 
+installation (MySQL, PostgreSQL, SQL Seriver) to seed up docker build.
 
-Build an image :
+2. Create anonymizer configuration in, say, `config.yaml`.
+
+3. Build an image.
+
 ```
 docker build -t webnetfr/anonymizer .
 ```
 
-Run :
+4. Run anonymisation.
+
 ```
 docker run --volume <absolute_path_to_local_config>:<absolute_path_to_config_in_container> \
     webnetfr/anonymizer \
-    php vendor/bin/database-anonymizer --no-interaction --url=<database url> <path_to_config_in_container>
+    php vendor/bin/database-anonymizer --no-interaction --url <database url> <path_to_config_in_container>
 ```
 
 Where:
@@ -40,9 +44,17 @@ Your command may be:
 ```
 docker run --volume $(pwd)/conf.yaml:/var/www/anonymizer/config.yaml \
     webnetfr/anonymizer \
-    php vendor/bin/database-anonymizer -n -U=mysql://root:pass@localhost/db config.yaml
+    php vendor/bin/database-anonymizer -n -Umysql://root:pass@localhost/db config.yaml
 ```
 
-$(pwd)/config.yaml
+*Tip*: check out the variety of different options Docker provide you with. 
+For example you may add `--net=host` option to share your machine's network 
+with container.
+
+*Tip*: you can run and connect to container with these command :
+```
+docker run --volume $(pwd)/conf.yaml:/var/www/anonymizer/config.yaml -it \
+    webnetfr/anonymizer bash
+```
 
 [docker/Dockerfile]: docker/Dockerfile

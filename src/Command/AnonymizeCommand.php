@@ -65,8 +65,6 @@ class AnonymizeCommand extends Command
 
         $config = $this->getConfigFromFile($configFilePath);
 
-        var_dump($config);
-
         $generatorFactory = new ChainGeneratorFactory();
         $generatorFactory->addFactory(new ConstantGeneratorFactory())
             ->addFactory(new FakerGeneratorFactory());
