@@ -55,23 +55,6 @@ class AnonymizeCommand extends Command
             return;
         }
 
-        $configFile = $input->getArgument('config');
-        $configFilePath = realpath($input->getArgument('config'));
-        if (!is_file($configFilePath)) {
-            $output->writeln(sprintf('<error>Configuration file "%s" does not exist.</error>', $configFile));
-
-            return;
-        }
-
-        $config = $this->getConfigFromFile($configFilePath);
-
-        $generatorFactory = new ChainGeneratorFactory();
-        $generatorFactory->addFactory(new ConstantGeneratorFactory())
-            ->addFactory(new FakerGeneratorFactory());
-
-        $targetFactory = new TargetFactory($generatorFactory);
-        $targetTables = $targetFactory->createTargets($config);
-
         if ($dbURL = $input->getOption('url')) {
             $params = ['url' => $dbURL];
         } else {
@@ -86,6 +69,24 @@ class AnonymizeCommand extends Command
         }
 
         $connection = $this->getConnection($params);
+
+        $configFile = $input->getArgument('config');
+        $configFilePath = realpath($input->getArgument('config'));
+        if (!is_file($configFilePath)) {
+            $output->writeln(sprintf('<error>Configuration file "%s" does not exist.</error>', $configFile));
+
+            return;
+        }
+
+        $config = $this->getConfigFromFile($configFilePath);
+
+        $generatorFactory = new ChainGeneratorFactory();
+        $generatorFactory->addFactory(new ConstantGeneratorFactory())
+            ->addFactory(new FakerGeneratorFactory());
+
+        $targetFactory = (new TargetFactory($generatorFactory))
+            ->setConnection($connection);
+        $targetTables = $targetFactory->createTargets($config);
 
         $anonymizer = new Anonymizer();
         $anonymizer->anonymize($connection, $targetTables);

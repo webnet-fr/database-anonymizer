@@ -87,6 +87,13 @@ trait SystemTestTrait
         $order->addForeignKeyConstraint($user, ['user_id'], ['id']);
         $schemaManager->createTable($order);
 
+        $productivity = $schema->createTable('productivity');
+        $productivity->addColumn('day', 'date', ['notnull' => false]);
+        $productivity->addColumn('user_id', 'integer', ['unsigned' => true, 'notnull' => false]);
+        $productivity->addColumn('feedback', 'text', ['notnull' => false]);
+        $productivity->setPrimaryKey(['day', 'user_id']);
+        $schemaManager->createTable($productivity);
+
         foreach (range(1, 10) as $i) {
             $connection->createQueryBuilder()
                 ->insert('users')
@@ -98,6 +105,16 @@ trait SystemTestTrait
             $connection->createQueryBuilder()
                 ->insert('orders')
                 ->values(['id' => $i, 'user_id' => mt_rand(1, 10)])
+                ->execute();
+        }
+
+        foreach (range(1, 30) as $i) {
+            $connection->createQueryBuilder()
+                ->insert('productivity')
+                ->values([
+                    'day' => $connection->quote(new \DateTime("+$i days"), 'date'),
+                    'user_id' => mt_rand(1, 10)
+                ])
                 ->execute();
         }
 

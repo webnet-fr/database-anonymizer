@@ -41,7 +41,7 @@ class AnonymizerTest extends TestCase
         $targetFields[] = new TargetField('lastname', new LastName(new Person($faker)));
         $targetFields[] = new TargetField('birthdate', new DateTime(new FakerProviderDateTime($faker), ['format' => 'Y-m-d']));
         $targetFields[] = new TargetField('phone', new PhoneNumber(new FakerProviderPhoneNumber($faker)));
-        $targets[] = new TargetTable('users', 'id', $targetFields);
+        $targets[] = new TargetTable('users', ['id'], $targetFields);
 
         $connection = $this->getConnection();
         $anonymizer = new Anonymizer();

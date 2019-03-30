@@ -48,7 +48,12 @@ class Anonymizer
                     $values[$targetField->getName()] =  $anonValue;
                 }
 
-                $connection->update($targetTable->getName(), $values, [$pk => $row[$pk]]);
+                $pkValues = [];
+                foreach ($pk as $pkField) {
+                    $pkValues[$pkField] = $row[$pkField];
+                }
+
+                $connection->update($targetTable->getName(), $values, $pkValues);
             }
         }
     }

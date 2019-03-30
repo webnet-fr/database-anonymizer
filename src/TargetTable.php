@@ -18,9 +18,9 @@ class TargetTable
     private $name;
 
     /**
-     * Name of the primary key.
+     * Primary key field names.
      *
-     * @var string
+     * @var array
      */
     private $primaryKey;
 
@@ -33,10 +33,10 @@ class TargetTable
 
     /**
      * @param string $name
-     * @param string $primaryKey
+     * @param array $primaryKey
      * @param TargetField[] $targetFields
      */
-    public function __construct(string $name, string $primaryKey, array $targetFields)
+    public function __construct(string $name, array $primaryKey, array $targetFields)
     {
         $this->name = $name;
         $this->primaryKey = $primaryKey;
@@ -56,9 +56,9 @@ class TargetTable
     /**
      * Get the name of the primary key.
      *
-     * @return string
+     * @return array
      */
-    public function getPrimaryKey(): string
+    public function getPrimaryKey(): array
     {
         return $this->primaryKey;
     }
@@ -80,7 +80,7 @@ class TargetTable
      */
     public function getAllFieldNames(): array
     {
-        $fields = [$this->primaryKey];
+        $fields = $this->primaryKey;
 
         foreach ($this->targetFields as $targetField) {
             $fields[] = $targetField->getName();

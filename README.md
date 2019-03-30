@@ -4,7 +4,52 @@
 [![codecov](https://codecov.io/gh/webnet-fr/database-anonymizer/branch/master/graph/badge.svg)](https://codecov.io/gh/webnet-fr/database-anonymizer)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/webnet-fr/database-anonymizer/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/webnet-fr/database-anonymizer)
 
-### Use Docker
+
+### Why ?
+
+[General Data Protection Regulation] (GDPR) imposes strict rules in domain of
+information storage and treatment. You must not treat the user's personal data 
+unless there is a strong necessity. In case you want to dump a production database
+in order to use it during development you cannot store or use peronal data in 
+dumped database anymore. You must delete or anonymize personal information before
+importing production database in your developpment setting.
+
+
+### How ?
+
+Launch one command provided by our **database anonymizer** before dumping a 
+production database and it will replace personal information with random but 
+meaningful data. The good point is that you specify fields to anonymize and
+how they will be anonimized:
+
+```
+webnet_fr_database_anonymizer:  # required part of configuration
+  tables:
+    users:                      # table name
+      primary_key: [id]         # indicate primary key
+      fields:
+        email:                  # field's name to anonymize
+          generator: email      # chose the one of dozens generators
+          unique: ~             # any option to pass to generator
+        first_name:             # another field to anonymize
+          generator: first_name # generator
+```
+
+`primary_key` entry is optional and can be inferred automatically. You can 
+indicate a composite primary key or any column with unique non-null value.
+
+
+### What to do ?
+
+
+### What generators are available ?
+
+
+### No PHP in your environment ?
+
+Then take advantage of Docker.
+
+0. Install [Docker].
 
 1. Place a [docker/Dockerfile] in empty folder. Delete unnecessary extension 
 installation (MySQL, PostgreSQL, SQL Seriver) to seed up docker build.
@@ -38,8 +83,8 @@ but you can indicate the path relative to `/var/www/anonymizer`. That said you
 can simply put `config.yaml` if you used `/var/www/anonymizer/config.yaml` in
 `<absolute_path_to_config_in_container>`.
  
-Imagine you downloaded [Dockerfile] in empty folder and created `conf.yml` near to it.
-Your command may be:
+Imagine you downloaded [docker/Dockerfile] in empty folder and created `conf.yml` 
+near to it. Your command may be:
 
 ```
 docker run --volume $(pwd)/conf.yaml:/var/www/anonymizer/config.yaml \
@@ -57,4 +102,6 @@ docker run --volume $(pwd)/conf.yaml:/var/www/anonymizer/config.yaml -it \
     webnetfr/anonymizer bash
 ```
 
+[Docker]: https://www.docker.com
+[General Data Protection Regulation]: https://en.wikipedia.org/wiki/General_Data_Protection_Regulation
 [docker/Dockerfile]: docker/Dockerfile

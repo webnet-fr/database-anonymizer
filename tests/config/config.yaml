@@ -3,7 +3,6 @@ webnet_fr_database_anonymizer:
         locale: fr_FR
     tables:
         users:
-            primary_key: id
             fields:
                 email:
                     generator: email
@@ -23,7 +22,6 @@ webnet_fr_database_anonymizer:
                     generator: constant
                     value: pass123
         orders:
-            primary_key: id
             fields:
                 address:
                     generator: address
@@ -42,3 +40,8 @@ webnet_fr_database_anonymizer:
                     generator: datetime
                     format: Y-m-d H:i:s
                     start: -1 month
+        productivity:
+            primary_key: [day, user_id]
+            fields:
+                feedback:
+                    generator: lorem
