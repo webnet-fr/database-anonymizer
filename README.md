@@ -7,20 +7,20 @@
 
 ### Why ?
 
-[General Data Protection Regulation] (GDPR) imposes strict rules in domain of
-information storage and treatment. You must not treat the user's personal data 
+[General Data Protection Regulation] (GDPR) imposes strict rules in the domain of
+information storage and treatment. You must not treat the users' personal data 
 unless there is a strong necessity. In case you want to dump a production database
 in order to use it during development you cannot store or use peronal data in 
-dumped database anymore. You must delete or anonymize personal information before
-importing production database in your developpment setting.
+a dumped database anymore. You must delete or anonymize personal information before
+importing a production database in your developpment setting.
 
 
 ### How ?
 
 Launch one command provided by our **database anonymizer** before dumping a 
 production database and it will replace personal information with random but 
-meaningful data. The good point is that you specify fields to anonymize and
-how they will be anonimized:
+meaningful data. The good point is that you can specify the fields to anonymize 
+and how they will be anonymized:
 
 ```
 webnet_fr_database_anonymizer:  # required part of configuration
@@ -36,7 +36,7 @@ webnet_fr_database_anonymizer:  # required part of configuration
 ```
 
 `primary_key` entry is optional and can be inferred automatically. You can 
-indicate a composite primary key or any column with unique non-null value.
+indicate a composite primary key or any column with a unique non-null value.
 
 
 ### What generators are available ?
@@ -63,10 +63,10 @@ Then take advantage of Docker.
 
 0. Install [Docker].
 
-1. Place a [docker/Dockerfile] in empty folder. Delete unnecessary extension 
-installation (MySQL, PostgreSQL, SQL Seriver) to seed up docker build.
+1. Place the [docker/Dockerfile] in an empty folder. Delete unnecessary extension 
+installation (MySQL, PostgreSQL, SQL Seriver) to speed up the docker build.
 
-2. Create anonymizer configuration in, say, `config.yaml`.
+2. Create the anonymizer configuration in, say, `config.yaml`.
 
 3. Build an image.
 
@@ -74,7 +74,7 @@ installation (MySQL, PostgreSQL, SQL Seriver) to seed up docker build.
 docker build -t webnetfr/anonymizer .
 ```
 
-4. Run anonymisation.
+4. Run anonymization.
 
 ```
 docker run --volume <absolute_path_to_local_config>:<absolute_path_to_config_in_container> \
@@ -86,17 +86,17 @@ Where:
 
 - `<absolute_path_to_local_config>`
 - `<absolute_path_to_config_in_container>` is a path for your configuraion
-  in container accessible by anonymizer. I suggest you to always use `/var/www/anonymizer/config.yaml`
-- `<database url>` is URL to your database (e.g. `mysql://user:password@host:port/name`).
-  Check out the command options if you prefer to pass `host`, `port`, `user`, `password` 
+  in the container accessible by anonymizer. I suggest you to always use `/var/www/anonymizer/config.yaml`
+- `<database url>` is the URL to your database (e.g. `mysql://user:password@host:port/name`).
+  Check out the command options if you prefer to pass the `host`, `port`, `user`, `password` 
   values in separate options.
 - `<path_to_config_in_container>` is the same as `<absolute_path_to_config_in_container>`
 but you can indicate the path relative to `/var/www/anonymizer`. That said you 
 can simply put `config.yaml` if you used `/var/www/anonymizer/config.yaml` in
 `<absolute_path_to_config_in_container>`.
  
-Imagine you downloaded [docker/Dockerfile] in empty folder and created `conf.yml` 
-near to it. Your command may be:
+Imagine you downloaded the [docker/Dockerfile] into an empty folder and created 
+`conf.yml` next to it. Your command may be:
 
 ```
 docker run --volume $(pwd)/conf.yaml:/var/www/anonymizer/config.yaml \
@@ -104,11 +104,11 @@ docker run --volume $(pwd)/conf.yaml:/var/www/anonymizer/config.yaml \
     php vendor/bin/database-anonymizer -n -Umysql://root:pass@localhost/db config.yaml
 ```
 
-*Tip*: check out the variety of different options Docker provide you with. 
-For example you may add `--net=host` option to share your machine's network 
-with container.
+*Tip*: check out the variety of different options Docker provides you with.
+For example you may add the `--net=host` option to share your machine's network 
+with the container.
 
-*Tip*: you can run and connect to container with these command :
+*Tip*: you can run and connect to the container with this command :
 ```
 docker run --volume $(pwd)/conf.yaml:/var/www/anonymizer/config.yaml -it \
     webnetfr/anonymizer bash
