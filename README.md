@@ -39,10 +39,22 @@ webnet_fr_database_anonymizer:  # required part of configuration
 indicate a composite primary key or any column with unique non-null value.
 
 
-### What to do ?
-
-
 ### What generators are available ?
+
+| Name             | Class           | Example | Options |
+|------------------|-----------------|---------|---------|
+| `constant`       | [Constant]      | *value*, *3.1459*| |
+| `address`        | [Address]       | *9, chemin Manon Begue 03427 Bouvier* | `uniuqe`, `locale` |
+| `city`           | [City]          | *Loiseau* | `uniuqe`, `locale` |
+| `country`        | [Country]       | *Pays-Bas* | `uniuqe`, `locale` |
+| `post_code`      | [PostCode]      | *14594* | `uniuqe`, `locale` |
+| `street_address` | [StreetAddress] | *5, impasse Lagarde* | `uniuqe`, `locale` |
+| `email` | [Email] | *laure58@tele2.fr* | `uniuqe`, `locale` |
+| `datetime` | [DateTime] | *2019-03-11 02:14:50* | `uniuqe`, `format` |
+| `first_name` | [FirstName] | *Julien* | `uniuqe`, `locale` |
+| `lorem` | [Lorem] | *Dolores qui rerum explicabo ab animi sed eveniet facere...* | `uniuqe`, `max_nb_chars` (default is 200) |
+| `password` | [Password] | *~\'KknuLr_* | `uniuqe` |
+| `phone_number` | [PhoneNumber] | *+33 7 77 82 00 38* | `uniuqe`, `locale` |
 
 
 ### No PHP in your environment ?
@@ -102,6 +114,19 @@ docker run --volume $(pwd)/conf.yaml:/var/www/anonymizer/config.yaml -it \
     webnetfr/anonymizer bash
 ```
 
-[Docker]: https://www.docker.com
 [General Data Protection Regulation]: https://en.wikipedia.org/wiki/General_Data_Protection_Regulation
+[Constant]: src/Generator/Constant.php
+[Address]: src/Generator/Address.php
+[City]: src/Generator/City.php
+[Country]: src/Generator/Country.php
+[PostCode]: src/Generator/PostCode.php
+[StreetAddress]: src/Generator/StreetAddress.php
+[Email]: src/Generator/Email.php
+[DateTime]: src/Generator/DateTime.php
+[FirstName]: src/Generator/FirstName.php
+[LastName]: src/Generator/LastName.php
+[Lorem]: src/Generator/Lorem.php
+[Password]: src/Generator/Password.php
+[PhoneNumber]: src/Generator/PhoneNumber.php
+[Docker]: https://www.docker.com
 [docker/Dockerfile]: docker/Dockerfile
