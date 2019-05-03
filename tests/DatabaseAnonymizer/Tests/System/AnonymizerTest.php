@@ -3,15 +3,9 @@
 namespace WebnetFr\DatabaseAnonymizer\Tests\System;
 
 use Faker\Factory as FakerFactory;
-use Faker\Provider\DateTime as FakerProviderDateTime;
-use Faker\Provider\Person;
-use Faker\Provider\PhoneNumber as FakerProviderPhoneNumber;
 use PHPUnit\Framework\TestCase;
 use WebnetFr\DatabaseAnonymizer\Anonymizer;
-use WebnetFr\DatabaseAnonymizer\Generator\DateTime;
-use WebnetFr\DatabaseAnonymizer\Generator\FirstName;
-use WebnetFr\DatabaseAnonymizer\Generator\LastName;
-use WebnetFr\DatabaseAnonymizer\Generator\PhoneNumber;
+use WebnetFr\DatabaseAnonymizer\Generator\FakerGenerator;
 use WebnetFr\DatabaseAnonymizer\TargetField;
 use WebnetFr\DatabaseAnonymizer\TargetTable;
 
@@ -37,10 +31,10 @@ class AnonymizerTest extends TestCase
     public function testAnonymizeUserTable()
     {
         $faker = FakerFactory::create();
-        $targetFields[] = new TargetField('firstname', new FirstName(new Person($faker)));
-        $targetFields[] = new TargetField('lastname', new LastName(new Person($faker)));
-        $targetFields[] = new TargetField('birthdate', new DateTime(new FakerProviderDateTime($faker), ['format' => 'Y-m-d']));
-        $targetFields[] = new TargetField('phone', new PhoneNumber(new FakerProviderPhoneNumber($faker)));
+        $targetFields[] = new TargetField('firstname', new FakerGenerator($faker, 'firstName'));
+        $targetFields[] = new TargetField('lastname', new FakerGenerator($faker, 'lastName'));
+        $targetFields[] = new TargetField('birthdate', new FakerGenerator($faker, 'dateTime', [], ['date_format' => 'Y-m-d H:i:s']));
+        $targetFields[] = new TargetField('phone', new FakerGenerator($faker, 'e164PhoneNumber'));
         $targets[] = new TargetTable('users', ['id'], $targetFields);
 
         $connection = $this->getConnection();

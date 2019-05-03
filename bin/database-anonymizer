@@ -2,7 +2,10 @@
 <?php
 
 use Symfony\Component\Console\Application;
-use WebnetFr\DatabaseAnonymizer\Command\AnonymizeCommand;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 set_time_limit(0);
 
@@ -19,8 +22,13 @@ if (!class_exists(Application::class)) {
     throw new \RuntimeException('You need to add "symfony/console" as a Composer dependency.');
 }
 
-(new Application('Database anonymizer', '0.0.1'))
-    ->add(new AnonymizeCommand())
-    ->getApplication()
-    ->setDefaultCommand('webnet-fr:anonymizer:anonymize', true)
+$container = new ContainerBuilder();
+$container->addCompilerPass(new AddConsoleCommandPass());
+$loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../src/Resources/config'));
+$loader->load('services.xml');
+$container->compile();
+
+$application = (new Application('Database anonymizer', '0.0.1'));
+$application->setCommandLoader($container->get('console.command_loader'));
+$application->setDefaultCommand('webnet-fr:anonymizer:anonymize', true)
     ->run();

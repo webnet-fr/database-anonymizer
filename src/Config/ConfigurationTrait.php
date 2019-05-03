@@ -29,7 +29,7 @@ trait ConfigurationTrait
                             ->end()
                             ->arrayNode('fields')
                                 ->arrayPrototype()
-                                    ->scalarPrototype()->end()
+                                    ->variablePrototype()->end()
                                 ->end()
                             ->end() // fields
                         ->end()
@@ -40,16 +40,20 @@ trait ConfigurationTrait
             // Pass default table configuration to field configuration.
             // defaults:
             //        locale: fr_FR
+            //        seed: seed_key
             //    tables:
             //        user:
             //            fields:
             //                name:
             //                    generator: first_name
-            //                    # locale fr_FR will be available here.
+            //                    # locale "fr_FR" will be set here.
+            //                    # seed "seed_key" will be set here.
             //                lastname:
             //                    generator: first_name
             //                    locale: en_EN
-            //                    # locale en_EN overwrites default value fr_FR.
+            //                    seed: lastname_seed_key
+            //                    # locale "en_EN" overwrites default value fr_FR.
+            //                    # seed "lastname_seed_key" overwrites default value "seed_key".
             ->ifTrue(static function ($v) {
                 return is_array($v) && array_key_exists('defaults', $v) && is_array($v['defaults']);
             })

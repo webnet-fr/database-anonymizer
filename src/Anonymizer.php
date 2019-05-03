@@ -45,7 +45,7 @@ class Anonymizer
                     }
 
                     // Set anonymized value.
-                    $values[$targetField->getName()] =  $anonValue;
+                    $values[$targetField->getName()] = $anonValue;
                 }
 
                 $pkValues = [];

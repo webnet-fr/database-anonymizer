@@ -3,6 +3,7 @@
 namespace WebnetFr\DatabaseAnonymizer\GeneratorFactory;
 
 use Faker\Factory;
+use WebnetFr\DatabaseAnonymizer\Exception\MissingFormatterException;
 use WebnetFr\DatabaseAnonymizer\Exception\UnsupportedGeneratorException;
 use WebnetFr\DatabaseAnonymizer\Generator\Address;
 use WebnetFr\DatabaseAnonymizer\Generator\City;
@@ -10,7 +11,7 @@ use WebnetFr\DatabaseAnonymizer\Generator\Country;
 use WebnetFr\DatabaseAnonymizer\Generator\DateTime;
 use WebnetFr\DatabaseAnonymizer\Generator\Email;
 use WebnetFr\DatabaseAnonymizer\Generator\FirstName;
-use WebnetFr\DatabaseAnonymizer\Generator\LastName;
+use WebnetFr\DatabaseAnonymizer\Generator\FakerGenerator;
 use WebnetFr\DatabaseAnonymizer\Generator\Lorem;
 use WebnetFr\DatabaseAnonymizer\Generator\Password;
 use WebnetFr\DatabaseAnonymizer\Generator\PhoneNumber;
@@ -25,63 +26,6 @@ use WebnetFr\DatabaseAnonymizer\Generator\GeneratorInterface;
  */
 class FakerGeneratorFactory extends Factory implements GeneratorFactoryInterface
 {
-    /**
-     * <generator key> => [
-     *     'faker_provider' => <class name of faker provider>,
-     *     'generator_class' => <class name of generator that will be instantiated>,
-     * ]
-     */
-    const GENERATOR_MAP = [
-        'address' => [
-            'faker_provider' => 'Address',
-            'generator_class' => Address::class,
-        ],
-        'city' => [
-            'faker_provider' => 'Address',
-            'generator_class' => City::class,
-        ],
-        'country' => [
-            'faker_provider' => 'Address',
-            'generator_class' => Country::class,
-        ],
-        'post_code' => [
-            'faker_provider' => 'Address',
-            'generator_class' => PostCode::class,
-        ],
-        'street_address' => [
-            'faker_provider' => 'Address',
-            'generator_class' => StreetAddress::class,
-        ],
-        'email' => [
-            'faker_provider' => 'Internet',
-            'generator_class' => Email::class,
-        ],
-        'datetime' => [
-            'faker_provider' => 'DateTime',
-            'generator_class' => DateTime::class,
-        ],
-        'first_name' => [
-            'faker_provider' => 'Person',
-            'generator_class' => FirstName::class,
-        ],
-        'last_name' => [
-            'faker_provider' => 'Person',
-            'generator_class' => LastName::class,
-        ],
-        'lorem' => [
-            'faker_provider' => 'Lorem',
-            'generator_class' => Lorem::class,
-        ],
-        'password' => [
-            'faker_provider' => 'Internet',
-            'generator_class' => Password::class,
-        ],
-        'phone_number' => [
-            'faker_provider' => 'PhoneNumber',
-            'generator_class' => PhoneNumber::class,
-        ],
-    ];
-
     const DEFAULT_LOCALE = 'en_US';
 
     /**
@@ -90,22 +34,35 @@ class FakerGeneratorFactory extends Factory implements GeneratorFactoryInterface
     public function getGenerator(array $config): GeneratorInterface
     {
         $generatorKey = $config['generator'];
-        if (!array_key_exists($generatorKey, self::GENERATOR_MAP)) {
+        if ('faker' !== $generatorKey) {
             throw new UnsupportedGeneratorException($generatorKey.' generator is not known');
         }
 
-        $fakerProviderName = self::GENERATOR_MAP[$generatorKey]['faker_provider'];
-        $providerFQCN = self::GENERATOR_MAP[$generatorKey]['generator_class'];
+        $formatter = $config['formatter'] ?? null;
+        if (!$formatter) {
+            throw new MissingFormatterException('You need to chose a "formatter" for "faker" generator');
+        }
 
         $locale = $config['locale'] ?? self::DEFAULT_LOCALE;
 
-        $fakerProviderFQCN = $this->getProviderClassname($fakerProviderName, $locale);
-        $fakerProvider = new $fakerProviderFQCN(Factory::create($locale));
+        $generator = Factory::create($locale);
 
-        if ($config['unique'] ?? false) {
-            $fakerProvider = $fakerProvider->unique();
+        $seed = $config['seed'] ?? false;
+        if ($seed) {
+            $generator->seed($seed);
         }
 
-        return new $providerFQCN($fakerProvider, $config);
+        if ($config['unique'] ?? false) {
+            $generator = $generator->unique();
+        }
+
+        $optional = $config['optional'] ?? false;
+        if ($optional) {
+            $generator = $generator->optional($optional);
+        }
+
+        $arguments = $config['arguments'] ?? [];
+
+        return new FakerGenerator($generator, $formatter, $arguments, $config);
     }
 }

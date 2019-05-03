@@ -6,6 +6,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use WebnetFr\DatabaseAnonymizer\Command\AnonymizeCommand;
+use WebnetFr\DatabaseAnonymizer\GeneratorFactory\ChainGeneratorFactory;
+use WebnetFr\DatabaseAnonymizer\GeneratorFactory\ConstantGeneratorFactory;
+use WebnetFr\DatabaseAnonymizer\GeneratorFactory\FakerGeneratorFactory;
 use WebnetFr\DatabaseAnonymizer\Tests\System\SystemTestTrait;
 
 /**
@@ -26,8 +29,12 @@ class AnonymizeCommandTest extends TestCase
 
     public function testExecute()
     {
+        $generator = new ChainGeneratorFactory();
+        $generator->addFactory(new ConstantGeneratorFactory())
+            ->addFactory(new FakerGeneratorFactory());
+
         $command = (new Application('Database anonymizer', '0.0.1'))
-            ->add(new AnonymizeCommand());
+            ->add(new AnonymizeCommand($generator));
 
         $commandTester = new CommandTester($command);
 

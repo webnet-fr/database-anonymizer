@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults public="false" />
+
+        <service id="WebnetFr\DatabaseAnonymizer\GeneratorFactory\ConstantGeneratorFactory" class="WebnetFr\DatabaseAnonymizer\GeneratorFactory\ConstantGeneratorFactory"></service>
+        <service id="WebnetFr\DatabaseAnonymizer\GeneratorFactory\FakerGeneratorFactory" class="WebnetFr\DatabaseAnonymizer\GeneratorFactory\FakerGeneratorFactory"></service>
+        <service id="WebnetFr\DatabaseAnonymizer\GeneratorFactory\ChainGeneratorFactory" class="WebnetFr\DatabaseAnonymizer\GeneratorFactory\ChainGeneratorFactory"></service>
+
+        <service id="console.command.anonymize_database" class="WebnetFr\DatabaseAnonymizer\Command\AnonymizeCommand">
+            <argument type="service" id="WebnetFr\DatabaseAnonymizer\GeneratorFactory\ChainGeneratorFactory"></argument>
+            <tag name="console.command" command="webnet-fr:anonymizer:anonymize" />
+        </service>
+    </services>
+</container>

@@ -1,47 +1,62 @@
 webnet_fr_database_anonymizer:
     defaults:
         locale: fr_FR
+        seed: seed_key
     tables:
         users:
             fields:
                 email:
-                    generator: email
+                    generator: faker
+                    formatter: safeEmail
                     unique: ~
                 firstname:
-                    generator: first_name
+                    generator: faker
+                    formatter: firstName
+                    arguments: ['male']
                 lastname:
-                    generator: last_name
+                    generator: faker
+                    formatter: lastName
                 birthdate:
-                    generator: datetime
-                    format: Y-m-d
-                    start: -99 years
-                    end: -18 years
+                    generator: faker
+                    formatter: dateTimeBetween
+                    arguments: ['-90 years', '-1 year']
+                    date_format: Y-m-d
                 phone:
-                    generator: phone_number
+                    generator: faker
+                    formatter: phoneNumber07
+                    optional: 0.5
                 password:
                     generator: constant
                     value: pass123
         orders:
             fields:
                 address:
-                    generator: address
+                    generator: faker
+                    formatter: address
                 street_address:
-                    generator: street_address
+                    generator: faker
+                    formatter: streetAddress
                 zip_code:
-                    generator: post_code
+                    generator: faker
+                    formatter: postcode
                 city:
-                    generator: city
+                    generator: faker
+                    formatter: city
                 country:
-                    generator: country
+                    generator: faker
+                    formatter: country
                 comment:
-                    generator: lorem
-                    max_nb_chars: 300
+                    generator: faker
+                    formatter: text
+                    arguments: [300]
                 created_at:
-                    generator: datetime
-                    format: Y-m-d H:i:s
-                    start: -1 month
+                    generator: faker
+                    formatter: dateTime
+                    date_format: Y-m-d H:i:s
+
         productivity:
             primary_key: [day, user_id]
             fields:
                 feedback:
-                    generator: lorem
+                    generator: faker
+                    formatter: sentence

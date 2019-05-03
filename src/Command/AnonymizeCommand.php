@@ -10,10 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use WebnetFr\DatabaseAnonymizer\Anonymizer;
 use WebnetFr\DatabaseAnonymizer\Config\TargetFactory;
-use WebnetFr\DatabaseAnonymizer\GeneratorFactory\ChainGeneratorFactory;
-use WebnetFr\DatabaseAnonymizer\GeneratorFactory\ConstantGeneratorFactory;
-use WebnetFr\DatabaseAnonymizer\GeneratorFactory\DatetimeGeneratorFactory;
-use WebnetFr\DatabaseAnonymizer\GeneratorFactory\FakerGeneratorFactory;
+use WebnetFr\DatabaseAnonymizer\GeneratorFactory\GeneratorFactoryInterface;
 
 /**
  * @author Vlad Riabchenko <vriabchenko@webnet.fr>
@@ -21,6 +18,21 @@ use WebnetFr\DatabaseAnonymizer\GeneratorFactory\FakerGeneratorFactory;
 class AnonymizeCommand extends Command
 {
     use AnonymizeCommandTrait;
+
+    /**
+     * @var GeneratorFactoryInterface
+     */
+    private $generatorFactory;
+
+    /**
+     * @param GeneratorFactoryInterface $generatorFactory
+     */
+    public function __construct(GeneratorFactoryInterface $generatorFactory)
+    {
+        parent::__construct();
+
+        $this->generatorFactory = $generatorFactory;
+    }
 
     /**
      * @inheritdoc
@@ -80,11 +92,7 @@ class AnonymizeCommand extends Command
 
         $config = $this->getConfigFromFile($configFilePath);
 
-        $generatorFactory = new ChainGeneratorFactory();
-        $generatorFactory->addFactory(new ConstantGeneratorFactory())
-            ->addFactory(new FakerGeneratorFactory());
-
-        $targetFactory = (new TargetFactory($generatorFactory))
+        $targetFactory = (new TargetFactory($this->generatorFactory))
             ->setConnection($connection);
         $targetTables = $targetFactory->createTargets($config);
 

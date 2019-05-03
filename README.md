@@ -17,10 +17,9 @@ importing a production database in your developpment setting.
 
 ### How ?
 
-Launch one command provided by our **database anonymizer** before dumping a 
-production database and it will replace personal information with random but 
-meaningful data. The good point is that you can specify the fields to anonymize 
-and how they will be anonymized:
+Launch a command provided by our **database anonymizer** and it will replace 
+personal information with random but meaningful data. The good point is that you 
+can specify the fields to anonymize and how they will be anonymized:
 
 ```
 webnet_fr_database_anonymizer:  # required part of configuration
@@ -29,35 +28,99 @@ webnet_fr_database_anonymizer:  # required part of configuration
       primary_key: [id]         # indicate primary key
       fields:
         email:                  # field's name to anonymize
-          generator: email      # chose the one of dozens generators
-          unique: ~             # any option to pass to generator
-        first_name:             # another field to anonymize
-          generator: first_name # generator
+          generator: faker      # chose a generator
+          formatter: email      # chose one of dozens of the faker's formatters
+          unique: ~             # assure that the random value will be unique
+        name:                   # another field to anonymize
+          generator: faker      # generator
+          formatter: name       # formatter
+          arguments: ['female'] # specify the arguemnts to pass to the formatter
 ```
 
 `primary_key` entry is optional and can be inferred automatically. You can 
 indicate a composite primary key or any column with a unique non-null value.
 
 
+### How to install ?
+
+Two options are provided:
+
+1. If you develop a PHP project you are welcome to add a dependency 
+(maybe with `--dev` option):  
+```php
+composer require webnet-fr/database-anonymizer
+```
+
+2. [Use Docker](#launch-anonymizer-in-a-docker-container) if you don't use PHP or for any other reason.
+
+
 ### What generators are available ?
 
-| Name             | Class           | Example | Options |
-|------------------|-----------------|---------|---------|
-| `constant`       | [Constant]      | *value*, *3.1459*| |
-| `address`        | [Address]       | *9, chemin Manon Begue 03427 Bouvier* | `uniuqe`, `locale` |
-| `city`           | [City]          | *Loiseau* | `uniuqe`, `locale` |
-| `country`        | [Country]       | *Pays-Bas* | `uniuqe`, `locale` |
-| `post_code`      | [PostCode]      | *14594* | `uniuqe`, `locale` |
-| `street_address` | [StreetAddress] | *5, impasse Lagarde* | `uniuqe`, `locale` |
-| `email` | [Email] | *laure58@tele2.fr* | `uniuqe`, `locale` |
-| `datetime` | [DateTime] | *2019-03-11 02:14:50* | `uniuqe`, `format` |
-| `first_name` | [FirstName] | *Julien* | `uniuqe`, `locale` |
-| `lorem` | [Lorem] | *Dolores qui rerum explicabo ab animi sed eveniet facere...* | `uniuqe`, `max_nb_chars` (default is 200) |
-| `password` | [Password] | *~\'KknuLr_* | `uniuqe` |
-| `phone_number` | [PhoneNumber] | *+33 7 77 82 00 38* | `uniuqe`, `locale` |
+Out of the box two types of generators are available :
+
+1. [Constant] generator :
+
+```yaml
+webnet_fr_database_anonymizer:
+    tables:
+        <table name>:
+            fields:
+                password:
+                    generator: constant # specify "constant" generator
+                    value: pass123      # all rows will be set to "pass123"
+```
+
+2. [Faker]'s generators. This tool makes use of `fzaninotto/faker` library.
+Anonymizer lets you use all formatters provided by Faker. We invite you check
+them out. Here is couple of examples :
+
+```yaml
+webnet_fr_database_anonymizer:
+    tables:
+        <table name>:
+            fields:
+
+                # Set "birthdate" field to a random date in a range from -100 to -18 years.
+                birthdate:
+                    generator: faker
+                    formatter: dateTimeBetween          
+                    arguments: ['-100 years', '-18 year']
+                    date_format: Y-m-d
+                    optional: 0.4
+
+                # Set "numero_ss" field to a random number of the french sécurité sociale.
+                # Pay attention that "nir" formatter is available only with french locale. 
+                numero_ss:
+                    generator: faker
+                    formatter: nir
+                    locale: fr_FR
+
+                # Set "tax_code" field to a random tax code for russian company.
+                # Pay attention that "kpp" formatter is available only with russian locale. 
+                tax_code:
+                    generator: faker
+                    formatter: kpp
+                    locale: ru_RU
+                    unique: ~
+```
+
+For each faker generator you can specify these options :
+- `formatter` - any available formatter in any available provider. E.g. `randomDigit`,
+`name`, `email`, `cpr` (for `da_DK` locale only).
+- `locale` - any available locale in Faker. Pay attention that certain formatters
+exist exclusively for certain locales. E.g. `cs_CZ`, `da_DK`, `ru_RU`.
+- `unique` - assures that each generated value is unique in the scope of current
+field. This is useful for generating usenames. Beware of overflow exceptions.
+- `optional` - with a certain chance a generated value will be null. When you
+set `optional: 0.4` you have 40% chance of random meaningful value and 60% chance 
+of null.
+- `date_format` - if a generated value is `DateTime` object you must specify a
+format. This is true for these formatters: `dateTimeBetween`, `dateTimeInInterval`, 
+`dateTimeThisYear`, etc. E.g `Y-m-d`, `Y-m-d H:i:s` or any valid format for 
+[php date() function].
 
 
-### No PHP in your environment ?
+### Launch anonymizer in a docker container
 
 Then take advantage of Docker.
 
@@ -116,17 +179,7 @@ docker run --volume $(pwd)/conf.yaml:/var/www/anonymizer/config.yaml -it \
 
 [General Data Protection Regulation]: https://en.wikipedia.org/wiki/General_Data_Protection_Regulation
 [Constant]: src/Generator/Constant.php
-[Address]: src/Generator/Address.php
-[City]: src/Generator/City.php
-[Country]: src/Generator/Country.php
-[PostCode]: src/Generator/PostCode.php
-[StreetAddress]: src/Generator/StreetAddress.php
-[Email]: src/Generator/Email.php
-[DateTime]: src/Generator/DateTime.php
-[FirstName]: src/Generator/FirstName.php
-[LastName]: src/Generator/LastName.php
-[Lorem]: src/Generator/Lorem.php
-[Password]: src/Generator/Password.php
-[PhoneNumber]: src/Generator/PhoneNumber.php
+[Faker]: https://github.com/fzaninotto/Faker
+[php date() function]: https://www.php.net/manual/fr/function.date.php
 [Docker]: https://www.docker.com
 [docker/Dockerfile]: docker/Dockerfile
