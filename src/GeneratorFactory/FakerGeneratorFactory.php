@@ -5,18 +5,7 @@ namespace WebnetFr\DatabaseAnonymizer\GeneratorFactory;
 use Faker\Factory;
 use WebnetFr\DatabaseAnonymizer\Exception\MissingFormatterException;
 use WebnetFr\DatabaseAnonymizer\Exception\UnsupportedGeneratorException;
-use WebnetFr\DatabaseAnonymizer\Generator\Address;
-use WebnetFr\DatabaseAnonymizer\Generator\City;
-use WebnetFr\DatabaseAnonymizer\Generator\Country;
-use WebnetFr\DatabaseAnonymizer\Generator\DateTime;
-use WebnetFr\DatabaseAnonymizer\Generator\Email;
-use WebnetFr\DatabaseAnonymizer\Generator\FirstName;
 use WebnetFr\DatabaseAnonymizer\Generator\FakerGenerator;
-use WebnetFr\DatabaseAnonymizer\Generator\Lorem;
-use WebnetFr\DatabaseAnonymizer\Generator\Password;
-use WebnetFr\DatabaseAnonymizer\Generator\PhoneNumber;
-use WebnetFr\DatabaseAnonymizer\Generator\PostCode;
-use WebnetFr\DatabaseAnonymizer\Generator\StreetAddress;
 use WebnetFr\DatabaseAnonymizer\Generator\GeneratorInterface;
 
 /**
@@ -29,7 +18,7 @@ class FakerGeneratorFactory extends Factory implements GeneratorFactoryInterface
     const DEFAULT_LOCALE = 'en_US';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getGenerator(array $config): GeneratorInterface
     {

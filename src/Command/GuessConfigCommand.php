@@ -6,7 +6,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use WebnetFr\DatabaseAnonymizer\Command\AnonymizeCommandTrait;
 use WebnetFr\DatabaseAnonymizer\ConfigGuesser\ConfigGuesser;
 use WebnetFr\DatabaseAnonymizer\ConfigGuesser\ConfigWriter;
 
@@ -29,7 +28,7 @@ class GuessConfigCommand extends Command
 
     /**
      * @param ConfigGuesser $configGuesser
-     * @param ConfigWriter $configWriter
+     * @param ConfigWriter  $configWriter
      */
     public function __construct(ConfigGuesser $configGuesser, ConfigWriter $configWriter)
     {
@@ -40,7 +39,7 @@ class GuessConfigCommand extends Command
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -59,7 +58,7 @@ class GuessConfigCommand extends Command
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

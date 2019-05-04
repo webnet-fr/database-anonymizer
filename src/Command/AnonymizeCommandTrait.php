@@ -21,9 +21,9 @@ trait AnonymizeCommandTrait
     /**
      * @param array $params
      *
-     * @return Connection
-     *
      * @throws \Doctrine\DBAL\DBALException
+     *
+     * @return Connection
      */
     protected function getConnectionFromInput(InputInterface $input)
     {
@@ -46,9 +46,9 @@ trait AnonymizeCommandTrait
     /**
      * @param array $params
      *
-     * @return Connection
-     *
      * @throws \Doctrine\DBAL\DBALException
+     *
+     * @return Connection
      */
     protected function getConnection(array $params): Connection
     {

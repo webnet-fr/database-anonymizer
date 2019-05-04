@@ -2,7 +2,6 @@
 
 namespace WebnetFr\DatabaseAnonymizer\Config;
 
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -14,7 +13,7 @@ class Configuration implements ConfigurationInterface
     use ConfigurationTrait;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {

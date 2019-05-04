@@ -14,13 +14,13 @@ use WebnetFr\DatabaseAnonymizer\Generator\GeneratorInterface;
 class ConstantGeneratorFactory implements GeneratorFactoryInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getGenerator(array $config): GeneratorInterface
     {
         if ('constant' !== $config['generator']) {
             throw new UnsupportedGeneratorException($config['generator'].' generator is not known');
-        };
+        }
 
         return new Constant($config['value']);
     }

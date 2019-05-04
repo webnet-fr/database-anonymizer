@@ -36,7 +36,7 @@ class TargetFactory
     }
 
     /**
-     * Set connection
+     * Set connection.
      *
      * @param Connection $connection
      *
@@ -50,19 +50,19 @@ class TargetFactory
     }
 
     /**
-     * Given configuration returns an array of @see TargetTable. 
-     * 
+     * Given configuration returns an array of @see TargetTable.
+     *
      * @param array $config
-     * [
-     *     <table name> => [
-     *         'primary_key' => <name of primary key field>,
-     *         'fields' => [
-     *             <field name> => <field config>,
-     *             ...
-     *         ]
-     *     ],
-     *     ...
-     * ]
+     *                      [
+     *                      <table name> => [
+     *                      'primary_key' => <name of primary key field>,
+     *                      'fields' => [
+     *                      <field name> => <field config>,
+     *                      ...
+     *                      ]
+     *                      ],
+     *                      ...
+     *                      ]
      *
      * @return TargetTable[]
      */
@@ -81,12 +81,12 @@ class TargetFactory
             $primaryKey = $tableConfig['primary_key'] ?? null;
             if (!$primaryKey) {
                 if (!$this->connection) {
-                    throw new UnknownPrimaryKeyException(sprintf("You must eigher set 'primary_key' on '%s' table or provide %s with Doctrine\DBAL\Connection instance via 'setConnection' method.", $tableName, self::class));
+                    throw new UnknownPrimaryKeyException(sprintf("You must eigher set 'primary_key' on '%s' table or provide %s with Doctrine\\DBAL\\Connection instance via 'setConnection' method.", $tableName, self::class));
                 }
                 $schemaManager = $this->connection->getSchemaManager();
                 $indexes = $schemaManager->listTableIndexes($tableName);
                 foreach ($indexes as $index) {
-                    /** @var $index \Doctrine\DBAL\Schema\Index */
+                    /** @var \Doctrine\DBAL\Schema\Index $index */
                     if ($index->isPrimary()) {
                         $primaryKey = $index->getColumns();
 

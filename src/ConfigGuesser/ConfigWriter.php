@@ -10,7 +10,7 @@ use Symfony\Component\Yaml\Yaml;
 class ConfigWriter
 {
     /**
-     * @var array $hints
+     * @var array
      *
      * @return string
      */
@@ -20,26 +20,25 @@ class ConfigWriter
 
         foreach ($hints as $tableName => $tableHints) {
             foreach ($tableHints as $columnName => $hint) {
-                /** @var $hint ConfigGuesserHint */
-
+                /** @var ConfigGuesserHint $hint */
                 $c = [
                     'generator' => 'faker',
                     'formatter' => $hint->formatter,
                 ];
 
-                if (!is_null($hint->arguments)) {
+                if (null !== $hint->arguments) {
                     $c['arguments'] = $hint->arguments;
                 }
 
-                if (!is_null($hint->locale)) {
+                if (null !== $hint->locale) {
                     $c['locale'] = $hint->locale;
                 }
 
-                if (!is_null($hint->unique)) {
+                if (null !== $hint->unique) {
                     $c['unique'] = $hint->unique;
                 }
 
-                if (!is_null($hint->date)) {
+                if (null !== $hint->date) {
                     $c['date_format'] = 'Y-m-d H:i:s';
                 }
 

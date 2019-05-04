@@ -71,9 +71,9 @@ class ConfigGuesser
     /**
      * @param string $name
      *
-     * @return ConfigGuesserHint
-     *
      * @throws GuesserMissingHintException
+     *
+     * @return ConfigGuesserHint
      */
     private static function guessColumn(string $name)
     {
@@ -81,14 +81,14 @@ class ConfigGuesser
 
         foreach (self::$hints as $hint) {
             foreach ($hint->words as $word) {
-                if (is_string($word) && in_array($word, $columnWords)) {
+                if (\is_string($word) && \in_array($word, $columnWords, true)) {
                     return $hint;
                 }
 
-                if (is_array($word) && count(array_intersect($word, $columnWords)) == count($word)) {
+                if (\is_array($word) && \count(array_intersect($word, $columnWords)) == \count($word)) {
                     return $hint;
                 }
-            };
+            }
         }
 
         throw new GuesserMissingHintException();

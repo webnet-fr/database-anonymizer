@@ -34,9 +34,9 @@ class FakerGenerator implements GeneratorInterface
 
     /**
      * @param Generator|DefaultGenerator $generator
-     * @param string $formatter
-     * @param array $arguments
-     * @param array $config
+     * @param string                     $formatter
+     * @param array                      $arguments
+     * @param array                      $config
      */
     public function __construct($generator, string $formatter, array $arguments = [], array $config = [])
     {
@@ -47,7 +47,7 @@ class FakerGenerator implements GeneratorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function generate()
     {

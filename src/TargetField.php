@@ -27,7 +27,7 @@ class TargetField
     private $generator;
 
     /**
-     * @param string $name
+     * @param string             $name
      * @param GeneratorInterface $generator
      */
     public function __construct(string $name, GeneratorInterface $generator)

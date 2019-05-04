@@ -15,7 +15,7 @@ class Anonymizer
     /**
      * Anonymize entire database based on target tables.
      *
-     * @param Connection $connection
+     * @param Connection    $connection
      * @param TargetTable[] $targets
      */
     public function anonymize(Connection $connection, array $targets)
@@ -27,9 +27,10 @@ class Anonymizer
             // Select all rows form current table:
             // SELECT <all target fields> FROM <target table>
             $fetchRowsSQL = $connection->createQueryBuilder()
-                ->select(join(',', $allFieldNames))
+                ->select(implode(',', $allFieldNames))
                 ->from($targetTable->getName())
-                ->getSQL();
+                ->getSQL()
+            ;
             $fetchRowsStmt = $connection->prepare($fetchRowsSQL);
             $fetchRowsStmt->execute();
 
@@ -40,7 +41,7 @@ class Anonymizer
                 foreach ($targetTable->getTargetFields() as $targetField) {
                     $anonValue = $targetField->generate();
 
-                    if (!is_null($anonValue) && !is_string($anonValue)) {
+                    if (null !== $anonValue && !\is_string($anonValue)) {
                         throw new InvalidAnonymousValueException('Generated value must be null or string');
                     }
 

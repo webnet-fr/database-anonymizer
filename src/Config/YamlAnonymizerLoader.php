@@ -11,20 +11,18 @@ use Symfony\Component\Yaml\Yaml;
 class YamlAnonymizerLoader extends FileLoader
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function load($resource, $type = null)
     {
-        $configValues = Yaml::parse(file_get_contents($resource));
-
-        return $configValues;
+        return Yaml::parse(file_get_contents($resource));
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function supports($resource, $type = null)
     {
-        return is_string($resource) && 'yaml' === pathinfo($resource, PATHINFO_EXTENSION);
+        return \is_string($resource) && 'yaml' === pathinfo($resource, PATHINFO_EXTENSION);
     }
 }

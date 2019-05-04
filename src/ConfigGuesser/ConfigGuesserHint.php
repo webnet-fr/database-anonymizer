@@ -46,7 +46,7 @@ class ConfigGuesserHint
     }
 
     /**
-     * Set words
+     * Set words.
      *
      * @param string[] $words
      *
@@ -60,7 +60,7 @@ class ConfigGuesserHint
     }
 
     /**
-     * Set arguments
+     * Set arguments.
      *
      * @param array $arguments
      *
@@ -74,7 +74,7 @@ class ConfigGuesserHint
     }
 
     /**
-     * Set date
+     * Set date.
      *
      * @param bool $date
      *
@@ -88,7 +88,7 @@ class ConfigGuesserHint
     }
 
     /**
-     * Set unique
+     * Set unique.
      *
      * @param bool $unique
      *
@@ -102,7 +102,7 @@ class ConfigGuesserHint
     }
 
     /**
-     * Set locale
+     * Set locale.
      *
      * @param string $locale
      *

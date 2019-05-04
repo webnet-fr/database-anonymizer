@@ -23,15 +23,15 @@ class Constant implements GeneratorInterface
      */
     public function __construct($constant)
     {
-        if (!is_null($constant) && !is_string($constant)) {
-            throw new InvalidConstantException("Constant value must be null or string");
+        if (null !== $constant && !\is_string($constant)) {
+            throw new InvalidConstantException('Constant value must be null or string');
         }
 
         $this->constant = $constant;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function generate()
     {

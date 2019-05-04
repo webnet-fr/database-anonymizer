@@ -22,9 +22,9 @@ interface GeneratorFactoryInterface
      *
      * @param array $config
      *
-     * @return GeneratorInterface
-     *
      * @throws \WebnetFr\DatabaseAnonymizer\Exception\UnsupportedGeneratorException
+     *
+     * @return GeneratorInterface
      */
     public function getGenerator(array $config): GeneratorInterface;
 }

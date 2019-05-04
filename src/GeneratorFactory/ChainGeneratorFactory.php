@@ -26,7 +26,7 @@ class ChainGeneratorFactory implements GeneratorFactoryInterface
      *
      * @return $this
      */
-    public function addFactory(GeneratorFactoryInterface $factory): ChainGeneratorFactory
+    public function addFactory(GeneratorFactoryInterface $factory): self
     {
         $this->factories[] = $factory;
 
@@ -34,7 +34,7 @@ class ChainGeneratorFactory implements GeneratorFactoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getGenerator(array $config): GeneratorInterface
     {

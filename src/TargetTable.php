@@ -32,8 +32,8 @@ class TargetTable
     private $targetFields;
 
     /**
-     * @param string $name
-     * @param array $primaryKey
+     * @param string        $name
+     * @param array         $primaryKey
      * @param TargetField[] $targetFields
      */
     public function __construct(string $name, array $primaryKey, array $targetFields)

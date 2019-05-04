@@ -6,7 +6,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use WebnetFr\DatabaseAnonymizer\GeneratorFactory\ChainGeneratorFactory;
-use WebnetFr\DatabaseAnonymizer\GeneratorFactory\FakerGeneratorFactory;
 
 /**
  * @author Vlad Riabchenko <vriabchenko@webnet.fr>
@@ -14,7 +13,7 @@ use WebnetFr\DatabaseAnonymizer\GeneratorFactory\FakerGeneratorFactory;
 class ChainGeneratorFactoryPass implements CompilerPassInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
@@ -24,7 +23,7 @@ class ChainGeneratorFactoryPass implements CompilerPassInterface
         foreach ($generatorFactories as $id => $tags) {
             $factoryClass = $container->getDefinition($id)->getClass();
 
-            if (!$factoryClass !== ChainGeneratorFactory::class && !is_subclass_of($factoryClass, ChainGeneratorFactory::class)) {
+            if (ChainGeneratorFactory::class !== !$factoryClass && !is_subclass_of($factoryClass, ChainGeneratorFactory::class)) {
                 $chainGeneratorFactoryDefinition->addMethodCall('addFactory', [new Reference($id)]);
             }
         }
