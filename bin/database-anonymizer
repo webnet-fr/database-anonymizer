@@ -33,5 +33,4 @@ $container->compile();
 
 $application = (new Application('Database anonymizer', '0.0.1'));
 $application->setCommandLoader($container->get('console.command_loader'));
-$application
-    ->run();
+$application->run();

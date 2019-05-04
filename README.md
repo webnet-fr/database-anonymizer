@@ -18,8 +18,32 @@ importing a production database in your developpment setting.
 ### How ?
 
 Launch a command provided by our **database anonymizer** and it will replace 
-personal information with random but meaningful data. The good point is that you 
-can specify the fields to anonymize and how they will be anonymized:
+personal information with random but meaningful data:
+
+```bash
+php bin/database-anonymizer webnet-fr:anonymizer:anonymize <config.yaml> -U<database url>
+```
+
+- Path to <config.yaml> is required. Check out the next section to find out how
+to write a configuration.
+- Numerous options to define a database connection are available:
+    - `--url=<url>` or `-U<url>` to define a database connection string. It is 
+    a very convenient option because it alone is capable to define your 
+    database connection.
+    - `--type=<type>` or `-t<type>` to define a driver to use (`mysql`, `mysqli`, 
+    `pdo_pgsql`, `sqlsrv`).
+    - `--host=<type>` or `-H<type>` to define a database host.
+    - `--port=<port>` or `-P<port>` to define a port of the database server.
+    - `--database=<name>` or `-d<name>` to define a port of the database server.
+    - `--user=<username>` or `-u<username>` to define a username to access 
+    the database server.
+    - `--password=<pass>` or `-p<pass>` to define a password to access the 
+    database server.
+
+### How to configure the fields to anonymize ?
+
+The good point is that you can specify the fields to anonymize and how they will 
+be anonymized:
 
 ```
 webnet_fr_database_anonymizer:  # required part of configuration
@@ -39,6 +63,28 @@ webnet_fr_database_anonymizer:  # required part of configuration
 
 `primary_key` entry is optional and can be inferred automatically. You can 
 indicate a composite primary key or any column with a unique non-null value.
+
+
+### Let anonymizer guess the configuration
+
+While the configuration of all your database tables can be tedious we provide
+you with a guesser. The guesser command enable you to construct automatically 
+the configuration:
+
+```bash
+php bin/database-anonymizer webnet-fr:anonymizer:guess-config -f<file.yaml> -U<database url>
+```
+
+The guesser verifies all columns in all tables in your database searching for
+columns possibly containing sensitive personal data like first name, birth date,
+social security number, etc.
+
+You can pass the following arguments and options to the guess command:
+
+- `--file=<file.yaml>` or `-F=<file.yaml>` to write configuration to a file.
+Otherwise the configuration will pop out to your console.
+- `-U<url>`, `-t<type>`, `-H<type>`, `-P<port>`, `-d<name>`, `-u<username>`, 
+`-p<pass>` options are at your disposal to specify a database connection.
 
 
 ### How to install ?
