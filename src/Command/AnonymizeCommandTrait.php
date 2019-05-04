@@ -9,6 +9,7 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\DelegatingLoader;
 use Symfony\Component\Config\Loader\LoaderResolver;
+use Symfony\Component\Console\Input\InputInterface;
 use WebnetFr\DatabaseAnonymizer\Config\Configuration;
 use WebnetFr\DatabaseAnonymizer\Config\YamlAnonymizerLoader;
 
@@ -17,6 +18,31 @@ use WebnetFr\DatabaseAnonymizer\Config\YamlAnonymizerLoader;
  */
 trait AnonymizeCommandTrait
 {
+    /**
+     * @param array $params
+     *
+     * @return Connection
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    protected function getConnectionFromInput(InputInterface $input)
+    {
+        if ($dbURL = $input->getOption('url')) {
+            $params = ['url' => $dbURL];
+        } else {
+            $params = [
+                'driver' => $input->getOption('type'),
+                'host' => $input->getOption('host'),
+                'port' => $input->getOption('port'),
+                'dbname' => $input->getOption('database'),
+                'user' => $input->getOption('user'),
+                'password' => $input->getOption('password'),
+            ];
+        }
+
+        return $this->getConnection($params);
+    }
+
     /**
      * @param array $params
      *

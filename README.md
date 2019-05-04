@@ -46,8 +46,9 @@ indicate a composite primary key or any column with a unique non-null value.
 Two options are provided:
 
 1. If you develop a PHP project you are welcome to add a dependency 
-(maybe with `--dev` option):  
-```php
+(maybe with `--dev` option):
+  
+```bash
 composer require webnet-fr/database-anonymizer
 ```
 
