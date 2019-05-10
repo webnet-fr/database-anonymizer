@@ -2,12 +2,10 @@
 <?php
 
 use Symfony\Component\Console\Application;
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use WebnetFr\DatabaseAnonymizer\DependencyInjection\Compiler\ChainGeneratorFactoryPass;
-use WebnetFr\DatabaseAnonymizer\DependencyInjection\Compiler\GeneratorFactoryPass;
+use WebnetFr\DatabaseAnonymizer\DependencyInjection\WebnetFrDatabaseAnonymizerExtension;
 
 set_time_limit(0);
 
@@ -27,8 +25,8 @@ if (!class_exists(Application::class)) {
 $container = new ContainerBuilder();
 $container->addCompilerPass(new AddConsoleCommandPass())
     ->addCompilerPass(new ChainGeneratorFactoryPass());
-$loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../src/Resources/config'));
-$loader->load('services.xml');
+$container->registerExtension(new WebnetFrDatabaseAnonymizerExtension());
+$container->loadFromExtension('webnet_fr_database_anonymizer');
 $container->compile();
 
 $application = (new Application('Database anonymizer', '0.0.1'));

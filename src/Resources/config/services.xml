@@ -7,23 +7,16 @@
     <services>
         <defaults public="false" />
 
-        <service id="WebnetFr\DatabaseAnonymizer\GeneratorFactory\ConstantGeneratorFactory" class="WebnetFr\DatabaseAnonymizer\GeneratorFactory\ConstantGeneratorFactory">
-            <tag name="database_anonymizer.generator_factory"/>
-        </service>
-
-        <service id="WebnetFr\DatabaseAnonymizer\GeneratorFactory\FakerGeneratorFactory" class="WebnetFr\DatabaseAnonymizer\GeneratorFactory\FakerGeneratorFactory">
-            <tag name="database_anonymizer.generator_factory"/>
-        </service>
-
+        <service id="WebnetFr\DatabaseAnonymizer\GeneratorFactory\ConstantGeneratorFactory" class="WebnetFr\DatabaseAnonymizer\GeneratorFactory\ConstantGeneratorFactory"/>
+        <service id="WebnetFr\DatabaseAnonymizer\GeneratorFactory\FakerGeneratorFactory" class="WebnetFr\DatabaseAnonymizer\GeneratorFactory\FakerGeneratorFactory"/>
         <service id="WebnetFr\DatabaseAnonymizer\GeneratorFactory\ChainGeneratorFactory" class="WebnetFr\DatabaseAnonymizer\GeneratorFactory\ChainGeneratorFactory"/>
 
-        <service id="console.command.anonymizer_anonymize" class="WebnetFr\DatabaseAnonymizer\Command\AnonymizeCommand">
+        <service id="WebnetFr\DatabaseAnonymizer\Command\AnonymizeCommand" class="WebnetFr\DatabaseAnonymizer\Command\AnonymizeCommand">
             <argument type="service" id="WebnetFr\DatabaseAnonymizer\GeneratorFactory\ChainGeneratorFactory"/>
             <tag name="console.command" command="webnet-fr:anonymizer:anonymize" />
         </service>
 
         <service id="WebnetFr\DatabaseAnonymizer\ConfigGuesser\ConfigGuesser" class="WebnetFr\DatabaseAnonymizer\ConfigGuesser\ConfigGuesser"/>
-
         <service id="WebnetFr\DatabaseAnonymizer\ConfigGuesser\ConfigWriter" class="WebnetFr\DatabaseAnonymizer\ConfigGuesser\ConfigWriter"/>
 
         <service id="console.command.anonymizer_guess_config" class="WebnetFr\DatabaseAnonymizer\Command\GuessConfigCommand">

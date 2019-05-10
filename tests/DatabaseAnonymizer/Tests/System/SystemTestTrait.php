@@ -92,6 +92,7 @@ trait SystemTestTrait
         $productivity->addColumn('user_id', 'integer', ['unsigned' => true, 'notnull' => false]);
         $productivity->addColumn('feedback', 'text', ['notnull' => false]);
         $productivity->setPrimaryKey(['day', 'user_id']);
+        $productivity->addForeignKeyConstraint($user, ['user_id'], ['id']);
         $schemaManager->createTable($productivity);
 
         foreach (range(1, 10) as $i) {
