@@ -14,12 +14,13 @@ use WebnetFr\DatabaseAnonymizer\GeneratorFactory\GeneratorFactoryInterface;
 class WebnetFrDatabaseAnonymizerExtension extends Extension
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
         $container->registerForAutoconfiguration(GeneratorFactoryInterface::class)
-            ->addTag('database_anonymizer.generator_factory');
+            ->addTag('database_anonymizer.generator_factory')
+        ;
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');

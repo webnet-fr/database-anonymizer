@@ -23,8 +23,8 @@ if (!class_exists(Application::class)) {
 }
 
 $container = new ContainerBuilder();
-$container->addCompilerPass(new AddConsoleCommandPass())
-    ->addCompilerPass(new ChainGeneratorFactoryPass());
+$container->addCompilerPass(new AddConsoleCommandPass());
+$container->addCompilerPass(new ChainGeneratorFactoryPass());
 $container->registerExtension(new WebnetFrDatabaseAnonymizerExtension());
 $container->loadFromExtension('webnet_fr_database_anonymizer');
 $container->compile();

@@ -79,9 +79,8 @@ class AnonymizeCommand extends Command
 
         $config = $this->getConfigFromFile($configFilePath);
 
-        $targetFactory = (new TargetFactory($this->generatorFactory))
-            ->setConnection($connection)
-        ;
+        $targetFactory = new TargetFactory($this->generatorFactory);
+        $targetFactory->setConnection($connection);
         $targetTables = $targetFactory->createTargets($config);
 
         $anonymizer = new Anonymizer();

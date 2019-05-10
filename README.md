@@ -40,6 +40,21 @@ to write a configuration.
     - `--password=<pass>` or `-p<pass>` to define a password to access the 
     database server.
 
+
+### How to install ?
+
+Two options are provided:
+
+1. If you develop a PHP project you are welcome to add a dependency 
+(maybe with `--dev` option):
+  
+```bash
+composer require webnet-fr/database-anonymizer
+```
+
+2. [Use Docker](#launch-anonymizer-in-a-docker-container) if you don't use PHP or for any other reason.
+
+
 ### How to configure the fields to anonymize ?
 
 The good point is that you can specify the fields to anonymize and how they will 
@@ -85,20 +100,6 @@ You can pass the following arguments and options to the guess command:
 Otherwise the configuration will pop out to your console.
 - `-U<url>`, `-t<type>`, `-H<type>`, `-P<port>`, `-d<name>`, `-u<username>`, 
 `-p<pass>` options are at your disposal to specify a database connection.
-
-
-### How to install ?
-
-Two options are provided:
-
-1. If you develop a PHP project you are welcome to add a dependency 
-(maybe with `--dev` option):
-  
-```bash
-composer require webnet-fr/database-anonymizer
-```
-
-2. [Use Docker](#launch-anonymizer-in-a-docker-container) if you don't use PHP or for any other reason.
 
 
 ### What generators are available ?
