@@ -5,7 +5,7 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <defaults public="false" />
+        <defaults public="false" autoconfigure="true"/>
 
         <service id="WebnetFr\DatabaseAnonymizer\GeneratorFactory\ConstantGeneratorFactory" class="WebnetFr\DatabaseAnonymizer\GeneratorFactory\ConstantGeneratorFactory"/>
         <service id="WebnetFr\DatabaseAnonymizer\GeneratorFactory\FakerGeneratorFactory" class="WebnetFr\DatabaseAnonymizer\GeneratorFactory\FakerGeneratorFactory"/>
