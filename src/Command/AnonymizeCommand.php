@@ -41,7 +41,8 @@ class AnonymizeCommand extends Command
     {
         parent::configure();
 
-        $this->setName('webnet-fr:anonymizer:anonymize')
+        $this
+            ->setName('webnet-fr:anonymizer:anonymize')
             ->setDescription('Anoymize database.')
             ->setHelp('Anoymize database according to GDPR (General Data Protection Regulation).')
             ->addArgument('config', InputArgument::REQUIRED, 'Configuration file.')

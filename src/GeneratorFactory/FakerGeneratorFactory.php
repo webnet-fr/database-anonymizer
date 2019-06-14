@@ -33,7 +33,6 @@ class FakerGeneratorFactory extends Factory implements GeneratorFactoryInterface
         }
 
         $locale = $config['locale'] ?? self::DEFAULT_LOCALE;
-
         $generator = Factory::create($locale);
 
         $seed = $config['seed'] ?? false;

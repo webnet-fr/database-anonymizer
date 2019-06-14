@@ -114,4 +114,33 @@ class ConfigGuesserHint
 
         return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function getConfigArray()
+    {
+        $c = [
+            'generator' => 'faker',
+            'formatter' => $this->formatter,
+        ];
+
+        if (null !== $this->arguments) {
+            $c['arguments'] = $this->arguments;
+        }
+
+        if (null !== $this->locale) {
+            $c['locale'] = $this->locale;
+        }
+
+        if (null !== $this->unique) {
+            $c['unique'] = $this->unique;
+        }
+
+        if (null !== $this->date) {
+            $c['date_format'] = 'Y-m-d H:i:s';
+        }
+
+        return $c;
+    }
 }

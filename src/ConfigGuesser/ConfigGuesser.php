@@ -75,7 +75,7 @@ class ConfigGuesser
      *
      * @return ConfigGuesserHint
      */
-    private static function guessColumn(string $name)
+    public static function guessColumn(string $name)
     {
         $columnWords = self::toWords($name);
 
