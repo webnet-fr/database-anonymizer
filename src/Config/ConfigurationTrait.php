@@ -58,15 +58,22 @@ trait ConfigurationTrait
                 return \is_array($v) && \array_key_exists('defaults', $v) && \is_array($v['defaults']);
             })
             ->then(static function ($c) {
-                foreach ($c['tables'] ?? [] as &$tableConfig) {
-                    foreach ($tableConfig['fields'] ?? [] as &$fieldConfig) {
-                        foreach ($c['defaults'] ?? [] as $defaultKey => $defaultValue) {
-                            if (!\array_key_exists($defaultKey, $fieldConfig)) {
-                                $fieldConfig[$defaultKey] = $defaultValue;
+                if (isset($c['tables'])) {
+                    foreach ($c['tables'] as &$tableConfig) {
+                        if ($tableConfig['fields']) {
+                            foreach ($tableConfig['fields'] as &$fieldConfig) {
+                                if (isset($c['defaults'])) {
+                                    foreach ($c['defaults'] as $defaultKey => $defaultValue) {
+                                        if (!\array_key_exists($defaultKey, $fieldConfig)) {
+                                            $fieldConfig[$defaultKey] = $defaultValue;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
+
 
                 return $c;
             })
