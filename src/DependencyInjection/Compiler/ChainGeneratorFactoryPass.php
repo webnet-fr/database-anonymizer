@@ -23,7 +23,7 @@ class ChainGeneratorFactoryPass implements CompilerPassInterface
         foreach ($generatorFactories as $id => $tags) {
             $factoryClass = $container->getDefinition($id)->getClass();
 
-            if (ChainGeneratorFactory::class !== !$factoryClass && !is_subclass_of($factoryClass, ChainGeneratorFactory::class)) {
+            if (ChainGeneratorFactory::class !== !$factoryClass && !\is_subclass_of($factoryClass, ChainGeneratorFactory::class)) {
                 $chainGeneratorFactoryDefinition->addMethodCall('addFactory', [new Reference($id)]);
             }
         }

@@ -69,7 +69,7 @@ class GuessConfigCommand extends Command
 
         $file = $input->getOption('file');
         if ($file) {
-            file_put_contents($file, $config);
+            \file_put_contents($file, $config);
         } else {
             $output->write($config);
         }

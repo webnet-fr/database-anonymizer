@@ -18,23 +18,23 @@ trait ConfigurationTrait
     {
         $node
             ->children()
-            ->arrayNode('defaults')
-            ->scalarPrototype()->end()
-            ->end()
-            ->arrayNode('tables')
-            ->arrayPrototype()
-            ->children()
-            ->arrayNode('primary_key')
-            ->scalarPrototype()->end()
-            ->end()
-            ->arrayNode('fields')
-            ->arrayPrototype()
-            ->variablePrototype()->end()
-            ->end()
-            ->end() // fields
-            ->end()
-            ->end()
-            ->end() // tables
+                ->arrayNode('defaults')
+                    ->scalarPrototype()->end()
+                ->end()
+                ->arrayNode('tables')
+                    ->arrayPrototype()
+                        ->children()
+                            ->arrayNode('primary_key')
+                                ->scalarPrototype()->end()
+                            ->end()
+                            ->arrayNode('fields')
+                                ->arrayPrototype()
+                                    ->variablePrototype()->end()
+                                ->end()
+                            ->end() // fields
+                        ->end()
+                    ->end()
+                ->end() // tables
             ->end()
             ->beforeNormalization()
             // Pass default table configuration to field configuration.
