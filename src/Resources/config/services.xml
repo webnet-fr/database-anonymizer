@@ -19,7 +19,7 @@
         <service id="WebnetFr\DatabaseAnonymizer\ConfigGuesser\ConfigGuesser" class="WebnetFr\DatabaseAnonymizer\ConfigGuesser\ConfigGuesser"/>
         <service id="WebnetFr\DatabaseAnonymizer\ConfigGuesser\ConfigWriter" class="WebnetFr\DatabaseAnonymizer\ConfigGuesser\ConfigWriter"/>
 
-        <service id="console.command.anonymizer_guess_config" class="WebnetFr\DatabaseAnonymizer\Command\GuessConfigCommand">
+        <service id="WebnetFr\DatabaseAnonymizer\Command\GuessConfigCommand" class="WebnetFr\DatabaseAnonymizer\Command\GuessConfigCommand">
             <argument type="service" id="WebnetFr\DatabaseAnonymizer\ConfigGuesser\ConfigGuesser"/>
             <argument type="service" id="WebnetFr\DatabaseAnonymizer\ConfigGuesser\ConfigWriter"/>
             <tag name="console.command" command="webnet-fr:anonymizer:guess-config" />

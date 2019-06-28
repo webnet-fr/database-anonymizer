@@ -17,7 +17,11 @@ class ChainGeneratorFactoryPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $chainGeneratorFactoryDefinition = $container->getDefinition(ChainGeneratorFactory::class);
+        if (!$container->has(ChainGeneratorFactory::class)) {
+            return;
+        }
+
+        $chainGeneratorFactoryDefinition = $container->findDefinition(ChainGeneratorFactory::class);
         $generatorFactories = $container->findTaggedServiceIds('database_anonymizer.generator_factory');
 
         foreach ($generatorFactories as $id => $tags) {

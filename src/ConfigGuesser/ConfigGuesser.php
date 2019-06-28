@@ -61,6 +61,8 @@ class ConfigGuesser
                 try {
                     $hints[$tableName][$columnName] = self::guessColumn($columnName);
                 } catch (GuesserMissingHintException $e) {
+                    // Column cannot be guessed and it does not seem to be
+                    // personal information. Skip it.
                 }
             }
         }
