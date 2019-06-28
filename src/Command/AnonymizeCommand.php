@@ -2,6 +2,7 @@
 
 namespace WebnetFr\DatabaseAnonymizer\Command;
 
+use Doctrine\DBAL\DBALException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -68,7 +69,17 @@ class AnonymizeCommand extends Command
             return;
         }
 
-        $connection = $this->getConnectionFromInput($input);
+        try {
+            $connection = $this->getConnectionFromInput($input);
+        } catch (DBALException $e) {
+            $connection = null;
+        }
+
+        if (!$connection) {
+            $output->writeln(sprintf('<error>Unable to establish a connection.</error>'));
+
+            return;
+        }
 
         $configFile = $input->getArgument('config');
         $configFilePath = realpath($input->getArgument('config'));

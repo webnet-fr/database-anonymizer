@@ -19,28 +19,33 @@ use WebnetFr\DatabaseAnonymizer\Config\YamlAnonymizerLoader;
 trait AnonymizeCommandTrait
 {
     /**
-     * @param array $params
+     * @param InputInterface $input
      *
      * @throws \Doctrine\DBAL\DBALException
      *
-     * @return Connection
+     * @return Connection|null
      */
     protected function getConnectionFromInput(InputInterface $input)
     {
         if ($dbURL = $input->getOption('url')) {
-            $params = ['url' => $dbURL];
-        } else {
-            $params = [
-                'driver' => $input->getOption('type'),
-                'host' => $input->getOption('host'),
-                'port' => $input->getOption('port'),
-                'dbname' => $input->getOption('database'),
-                'user' => $input->getOption('user'),
+            return $this->getConnection(['url' => $dbURL]);
+        } elseif (($type = $input->getOption('type'))
+            && ($host = $input->getOption('host'))
+            && ($port = $input->getOption('port'))
+            && ($database = $input->getOption('database'))
+            && ($user = $input->getOption('user'))
+        ) {
+            return $this->getConnection([
+                'driver' => $type,
+                'host' => $host,
+                'port' => $port,
+                'dbname' => $database,
+                'user' => $user,
                 'password' => $input->getOption('password'),
-            ];
+            ]);
         }
 
-        return $this->getConnection($params);
+        return null;
     }
 
     /**

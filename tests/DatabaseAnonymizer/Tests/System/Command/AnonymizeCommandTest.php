@@ -64,7 +64,7 @@ class AnonymizeCommandTest extends TestCase
             $this->assertTrue(is_string($row['firstname']));
             $this->assertTrue(is_string($row['lastname']));
             $this->assertTrue(is_string($row['birthdate']));
-            $this->assertTrue(is_string($row['phone']));
+            $this->assertTrue(is_string($row['phone']) || is_null($row['phone']));
             $this->assertTrue(is_string($row['password']));
         }
 
