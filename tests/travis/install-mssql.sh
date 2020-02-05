@@ -2,16 +2,6 @@
 
 set -ex
 
-echo Installing drivers
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6B05F25D762E3157
-curl https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-curl https://packages.microsoft.com/config/ubuntu/14.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql.list
-sudo apt-get update
-ACCEPT_EULA=Y sudo apt-get install -qy msodbcsql17 mssql-tools unixodbc libssl1.0.0
-
-echo Setting up Microsoft SQL Server
-
 sudo docker pull microsoft/mssql-server-linux:2017-latest
 sudo docker run \
     -e 'ACCEPT_EULA=Y' \
