@@ -3,6 +3,7 @@
 set -ex
 
 echo Installing drivers
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6B05F25D762E3157
 curl https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
 curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
 curl https://packages.microsoft.com/config/ubuntu/14.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql.list
