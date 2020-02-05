@@ -24,6 +24,7 @@ trait ConfigurationTrait
                 ->arrayNode('tables')
                     ->arrayPrototype()
                         ->children()
+                            ->booleanNode('truncate')->defaultFalse()->end()
                             ->arrayNode('primary_key')
                                 ->scalarPrototype()->end()
                             ->end()
@@ -73,7 +74,6 @@ trait ConfigurationTrait
                         }
                     }
                 }
-
 
                 return $c;
             })

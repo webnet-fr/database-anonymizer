@@ -35,7 +35,7 @@ class AnonymizerTest extends TestCase
         $targetFields[] = new TargetField('lastname', new FakerGenerator($faker, 'lastName'));
         $targetFields[] = new TargetField('birthdate', new FakerGenerator($faker, 'dateTime', [], ['date_format' => 'Y-m-d H:i:s']));
         $targetFields[] = new TargetField('phone', new FakerGenerator($faker, 'e164PhoneNumber'));
-        $targets[] = new TargetTable('users', ['id'], $targetFields);
+        $targets[] = new TargetTable('users', ['id'], $targetFields, false);
 
         $connection = $this->getConnection();
         $anonymizer = new Anonymizer();
@@ -55,5 +55,45 @@ class AnonymizerTest extends TestCase
             $this->assertTrue(is_string($row['birthdate']));
             $this->assertTrue(is_string($row['phone']));
         }
+    }
+
+    public function testTruncate()
+    {
+        $targets = [
+            new TargetTable('users', [], [], true),
+            new TargetTable('orders', [], [], true),
+            new TargetTable('productivity', [], [], true),
+        ];
+
+        $connection = $this->getConnection();
+        $anonymizer = new Anonymizer();
+        $anonymizer->anonymize($connection, $targets);
+
+        $selectSQL = $connection->createQueryBuilder()
+            ->select('COUNT(*)')
+            ->from('users', 'u')
+            ->getSQL();
+        $selectStmt = $connection->prepare($selectSQL);
+        $selectStmt->execute();
+        $result = $selectStmt->fetch();
+        $this->assertEquals(0, current($result));
+
+        $selectSQL = $connection->createQueryBuilder()
+            ->select('COUNT(*)')
+            ->from('orders', 'o')
+            ->getSQL();
+        $selectStmt = $connection->prepare($selectSQL);
+        $selectStmt->execute();
+        $result = $selectStmt->fetch();
+        $this->assertEquals(0, current($result));
+
+        $selectSQL = $connection->createQueryBuilder()
+            ->select('COUNT(*)')
+            ->from('productivity', 'p')
+            ->getSQL();
+        $selectStmt = $connection->prepare($selectSQL);
+        $selectStmt->execute();
+        $result = $selectStmt->fetch();
+        $this->assertEquals(0, current($result));
     }
 }

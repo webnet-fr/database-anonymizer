@@ -32,15 +32,30 @@ class TargetTable
     private $targetFields;
 
     /**
-     * @param string        $name
-     * @param array         $primaryKey
-     * @param TargetField[] $targetFields
+     * Truncate a table.
+     *
+     * @var bool
      */
-    public function __construct(string $name, array $primaryKey, array $targetFields)
+    private $truncate;
+
+    /**
+     * @param string $name
+     * @param array $primaryKey
+     * @param TargetField[] $targetFields
+     * @param bool $truncate
+     */
+    public function __construct(string $name, array $primaryKey, array $targetFields, bool $truncate)
     {
+        if ($truncate && $targetFields) {
+            throw new \InvalidArgumentException(sprintf(
+                'Invalid configuration of %s. Table can be either anonymized or truncated.', TargetTable::class
+            ));
+        }
+
         $this->name = $name;
         $this->primaryKey = $primaryKey;
         $this->targetFields = $targetFields;
+        $this->truncate = $truncate;
     }
 
     /**
@@ -87,5 +102,15 @@ class TargetTable
         }
 
         return $fields;
+    }
+
+    /**
+     * Table must be truncated.
+     *
+     * @return bool
+     */
+    public function isTruncate(): bool
+    {
+        return $this->truncate;
     }
 }

@@ -168,6 +168,21 @@ format. This is true for these formatters: `dateTimeBetween`, `dateTimeInInterva
 [php date() function].
 
 
+### Truncate tables
+
+There is a possibility to point tables to truncate:
+
+```yaml
+webnet_fr_database_anonymizer:
+    tables:
+        <table name>:
+            truncate: true
+```
+
+Pay attention that foreign keys constraint are deactivated while truncating tables. You risk to end up with foreign key
+inconsistency. 
+
+
 ### Launch anonymizer in a docker container
 
 Then take advantage of Docker.

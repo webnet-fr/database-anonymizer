@@ -53,16 +53,16 @@ class TargetFactory
      * Given configuration returns an array of @see TargetTable.
      *
      * @param array $config
-     *                      [
-     *                      <table name> => [
-     *                      'primary_key' => <name of primary key field>,
-     *                      'fields' => [
-     *                      <field name> => <field config>,
-     *                      ...
-     *                      ]
-     *                      ],
-     *                      ...
-     *                      ]
+     *     [
+     *         <table name> => [
+     *             'primary_key' => <name of primary key field>,
+     *             'fields' => [
+     *                 <field name> => <field config>,
+     *                 ...
+     *             ]
+     *         ],
+     *         ...
+     *     ]
      *
      * @return TargetTable[]
      */
@@ -95,7 +95,7 @@ class TargetFactory
                 }
             }
 
-            $targetTables[] = new TargetTable($tableName, $primaryKey, $targetFields);
+            $targetTables[] = new TargetTable($tableName, $primaryKey, $targetFields, $tableConfig['truncate']);
         }
 
         return $targetTables;
