@@ -48,7 +48,6 @@ jobs:
       services:
         - docker
       before_script:
-        - bash ./tests/travis/install-mssql-sqlsrv.sh
         - bash ./tests/travis/install-mssql.sh
     - php: 7.2
       env: DB=sqlsrv
@@ -56,5 +55,4 @@ jobs:
       services:
         - docker
       before_script:
-        - bash ./tests/travis/install-mssql-sqlsrv.sh
         - bash ./tests/travis/install-mssql.sh
