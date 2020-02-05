@@ -3,6 +3,7 @@
 namespace WebnetFr\DatabaseAnonymizer;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception\DriverException;
 use WebnetFr\DatabaseAnonymizer\Exception\InvalidAnonymousValueException;
 
 /**
@@ -24,11 +25,17 @@ class Anonymizer
     {
         foreach ($targets as $targetTable) {
             if ($targetTable->isTruncate()) {
+                try {
+                    $connection->query('SET FOREIGN_KEY_CHECKS=0'); // for MySQL
+                } catch (DriverException $e) {}
+
                 $dbPlatform = $connection->getDatabasePlatform();
-                $connection->query('SET FOREIGN_KEY_CHECKS=0');
-                $truncateQuery = $dbPlatform->getTruncateTableSql($targetTable->getName());
+                $truncateQuery = $dbPlatform->getTruncateTableSql($targetTable->getName(), true);
                 $connection->executeUpdate($truncateQuery);
-                $connection->query('SET FOREIGN_KEY_CHECKS=1');
+
+                try {
+                    $connection->query('SET FOREIGN_KEY_CHECKS=1'); // for MySQL
+                } catch (DriverException $e) {}
             } else {
                 $allFieldNames = $targetTable->getAllFieldNames();
                 $pk = $targetTable->getPrimaryKey();
