@@ -1,6 +1,5 @@
 language: php
-sudo: false
-dist: trusty
+dist: bionic
 
 before_install:
   - composer self-update

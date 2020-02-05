@@ -11,7 +11,7 @@
         <var name="db_type" value="sqlsrv"/>
         <var name="db_host" value="127.0.0.1" />
         <var name="db_username" value="sa" />
-        <var name="db_password" value="Anonymizer2018" />
+        <var name="db_password" value="pass" />
         <var name="db_name" value="anonymizer" />
         <var name="db_port" value="1433"/>
     </php>
