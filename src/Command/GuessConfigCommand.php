@@ -73,5 +73,7 @@ class GuessConfigCommand extends Command
         } else {
             $output->write($config);
         }
+
+        return 0;
     }
 }

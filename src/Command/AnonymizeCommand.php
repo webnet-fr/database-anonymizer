@@ -66,7 +66,7 @@ class AnonymizeCommand extends Command
         $question = new ConfirmationQuestion('Are you sure you want to anonymize your database?', false);
 
         if (!$input->getOption('no-interaction') && !$questionHelper->ask($input, $output, $question)) {
-            return;
+            return 1;
         }
 
         try {
@@ -78,7 +78,7 @@ class AnonymizeCommand extends Command
         if (!$connection) {
             $output->writeln(sprintf('<error>Unable to establish a connection.</error>'));
 
-            return;
+            return 1;
         }
 
         $configFile = $input->getArgument('config');
@@ -86,7 +86,7 @@ class AnonymizeCommand extends Command
         if (!is_file($configFilePath)) {
             $output->writeln(sprintf('<error>Configuration file "%s" does not exist.</error>', $configFile));
 
-            return;
+            return 1;
         }
 
         $config = $this->getConfigFromFile($configFilePath);
@@ -97,5 +97,7 @@ class AnonymizeCommand extends Command
 
         $anonymizer = new Anonymizer();
         $anonymizer->anonymize($connection, $targetTables);
+
+        return 0;
     }
 }
