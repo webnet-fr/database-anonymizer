@@ -95,7 +95,7 @@ class TargetFactory
                 }
             }
 
-            $targetTables[] = new TargetTable($tableName, $primaryKey, $targetFields, $tableConfig['truncate']);
+            $targetTables[] = new TargetTable($tableName, $primaryKey, $targetFields, $tableConfig['truncate'] ?? false);
         }
 
         return $targetTables;
