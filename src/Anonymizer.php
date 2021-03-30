@@ -2,8 +2,9 @@
 
 namespace WebnetFr\DatabaseAnonymizer;
 
+use WebnetFr\DatabaseAnonymizer\Event\AnonymizerEvent;
 use Doctrine\DBAL\Connection;
-use WebnetFr\DatabaseAnonymizer\Exception\InvalidAnonymousValueException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Database anonymizer.
@@ -12,6 +13,11 @@ use WebnetFr\DatabaseAnonymizer\Exception\InvalidAnonymousValueException;
  */
 class Anonymizer
 {
+    public function __construct(?EventDispatcherInterface $dispatcher = null)
+    {
+        $this->dispatcher = $dispatcher;
+    }
+
     /**
      * Anonymize entire database based on target tables.
      *
@@ -30,40 +36,21 @@ class Anonymizer
                 $connection->executeUpdate($truncateQuery);
                 $connection->query('SET FOREIGN_KEY_CHECKS=1');
             } else {
-                $allFieldNames = $targetTable->getAllFieldNames();
-                $pk = $targetTable->getPrimaryKey();
-
-                // Select all rows form current table:
-                // SELECT <all target fields> FROM <target table>
-                $fetchRowsSQL = $connection->createQueryBuilder()
-                    ->select(implode(',', $allFieldNames))
-                    ->from($targetTable->getName())
-                    ->getSQL()
-                ;
-                $fetchRowsStmt = $connection->prepare($fetchRowsSQL);
-                $fetchRowsStmt->execute();
-
                 // Anonymize all rows in current target table.
-                while ($row = $fetchRowsStmt->fetch()) {
-                    $values = [];
-                    // Anonymize all target fields in current row.
-                    foreach ($targetTable->getTargetFields() as $targetField) {
-                        $anonValue = $targetField->generate();
-
-                        if (null !== $anonValue && !\is_string($anonValue)) {
-                            throw new InvalidAnonymousValueException('Generated value must be null or string');
-                        }
-
-                        // Set anonymized value.
-                        $values[$targetField->getName()] = $anonValue;
+                $values = [];
+                foreach ($targetTable->getTargetFields() as $targetField) {
+                    if (!isset($this->fakerCache[$targetField->getName()])) {
+                        $this->fakerCache[$targetField->getName()] = $targetField->generate();
                     }
 
-                    $pkValues = [];
-                    foreach ($pk as $pkField) {
-                        $pkValues[$pkField] = $row[$pkField];
-                    }
+                    // Set anonymized value.
+                    $values[$targetField->getName()] = $this->fakerCache[$targetField->getName()];
+                }
 
-                    $connection->update($targetTable->getName(), $values, $pkValues);
+                $connection->update($targetTable->getName(), $values, [true => true]);
+
+                if (null !== $this->dispatcher) {
+                    $this->dispatcher->dispatch(new AnonymizerEvent($targetTable->getName(), $values));
                 }
             }
         }
