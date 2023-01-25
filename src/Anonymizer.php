@@ -12,6 +12,7 @@ use WebnetFr\DatabaseAnonymizer\Exception\InvalidAnonymousValueException;
  */
 class Anonymizer
 {
+    const PDO_PGSQL = 'pdo_pgsql';
     /**
      * Anonymize entire database based on target tables.
      *
@@ -25,10 +26,10 @@ class Anonymizer
         foreach ($targets as $targetTable) {
             if ($targetTable->isTruncate()) {
                 $dbPlatform = $connection->getDatabasePlatform();
-                $connection->query('SET FOREIGN_KEY_CHECKS=0');
-                $truncateQuery = $dbPlatform->getTruncateTableSql($targetTable->getName());
+                ($GLOBALS['db_type'] === self::PDO_PGSQL) ? $connection->query('set session_replication_role = replica;') : $connection->query('SET FOREIGN_KEY_CHECKS=0');
+                $truncateQuery = $dbPlatform->getTruncateTableSql($targetTable->getName(), true);
                 $connection->executeUpdate($truncateQuery);
-                $connection->query('SET FOREIGN_KEY_CHECKS=1');
+                ($GLOBALS['db_type'] === self::PDO_PGSQL) ? $connection->query('SET session_replication_role = origin;') : $connection->query('SET FOREIGN_KEY_CHECKS=1');
             } else {
                 $allFieldNames = $targetTable->getAllFieldNames();
                 $pk = $targetTable->getPrimaryKey();

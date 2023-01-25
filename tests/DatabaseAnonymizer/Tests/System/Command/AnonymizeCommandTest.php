@@ -23,7 +23,7 @@ class AnonymizeCommandTest extends TestCase
      * @inheritdoc
      * @throws \Doctrine\DBAL\DBALException
      */
-    protected function setUp()
+    protected function setUp():void
     {
         $this->regenerateUsersOrders();
     }
@@ -57,9 +57,9 @@ class AnonymizeCommandTest extends TestCase
             ->from('users')
             ->getSQL();
         $selectStmt = $connection->prepare($selectSQL);
-        $selectStmt->execute();
+        $result = $selectStmt->execute();
 
-        while ($row = $selectStmt->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $this->assertTrue(is_string($row['email']));
             $this->assertTrue(is_string($row['firstname']));
             $this->assertTrue(is_string($row['lastname']));
@@ -73,9 +73,9 @@ class AnonymizeCommandTest extends TestCase
             ->from('orders')
             ->getSQL();
         $selectStmt = $connection->prepare($selectSQL);
-        $selectStmt->execute();
+        $result = $selectStmt->execute();
 
-        while ($row = $selectStmt->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             $this->assertTrue(is_string($row['address']));
             $this->assertTrue(is_string($row['street_address']));
             $this->assertTrue(is_string($row['zip_code']));
@@ -112,8 +112,8 @@ class AnonymizeCommandTest extends TestCase
             ->from('users', 'u')
             ->getSQL();
         $selectStmt = $connection->prepare($selectSQL);
-        $selectStmt->execute();
-        $result = $selectStmt->fetch();
+        $orders = $selectStmt->execute();
+        $result = $orders->fetchAssociative();
         $this->assertEquals(0, current($result));
 
         $selectSQL = $connection->createQueryBuilder()
@@ -121,8 +121,8 @@ class AnonymizeCommandTest extends TestCase
             ->from('orders', 'o')
             ->getSQL();
         $selectStmt = $connection->prepare($selectSQL);
-        $selectStmt->execute();
-        $result = $selectStmt->fetch();
+        $orders = $selectStmt->execute();
+        $result = $orders->fetchAssociative();
         $this->assertEquals(0, current($result));
 
         $selectSQL = $connection->createQueryBuilder()
@@ -130,8 +130,14 @@ class AnonymizeCommandTest extends TestCase
             ->from('productivity', 'p')
             ->getSQL();
         $selectStmt = $connection->prepare($selectSQL);
-        $selectStmt->execute();
-        $result = $selectStmt->fetch();
+        $orders = $selectStmt->execute();
+        $result = $orders->fetchAssociative();
         $this->assertEquals(0, current($result));
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $this->getConnection()->close();
     }
 }

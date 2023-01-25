@@ -66,7 +66,7 @@ class ConfigGuesser
                 }
             }
         }
-
+        ksort($hints);
         return $hints;
     }
 
