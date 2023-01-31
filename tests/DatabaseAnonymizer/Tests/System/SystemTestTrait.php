@@ -50,10 +50,6 @@ trait SystemTestTrait
         $schemaManager = $connection->getSchemaManager();
 
         try {
-            $schemaManager->dropDatabase($GLOBALS['db_name']);
-        } catch (\Exception $e) {
-            // If tardet database doesn't exist.
-        }
 
         $schemaManager->createDatabase($GLOBALS['db_name']);
         $connection->close();
@@ -63,7 +59,8 @@ trait SystemTestTrait
         $schema = $schemaManager->createSchema();
 
         $user = $schema->createTable('users');
-        $user->addColumn('id', 'integer', ['id' => true, 'unsigned' => true, 'unique']);
+        $user->addColumn('id', 'integer', ['unsigned' => true]);
+        $user->addUniqueConstraint(['id']);
         $user->addColumn('email', 'string', ['length' => 256, 'notnull' => false]);
         $user->addColumn('firstname', 'string', ['length' => 256, 'notnull' => false]);
         $user->addColumn('lastname', 'string', ['length' => 256, 'notnull' => false]);
@@ -95,6 +92,15 @@ trait SystemTestTrait
         $productivity->addForeignKeyConstraint($user, ['user_id'], ['id']);
         $schemaManager->createTable($productivity);
 
+        } catch (\Exception $e) {
+            // If tardet database doesn't exist.
+        }
+        $connection->close();
+        $this->emptyTable('productivity');
+        $this->emptyTable('orders');
+        $this->emptyTable('users');
+        $connection = $this->getConnection();
+
         foreach (range(1, 10) as $i) {
             $connection->createQueryBuilder()
                 ->insert('users')
@@ -119,6 +125,14 @@ trait SystemTestTrait
                 ->execute();
         }
 
+        $connection->close();
+    }
+
+    private function emptyTable($table)
+    {
+        $connection = $this->getConnection();
+
+        $connection->createQueryBuilder()->delete($table)->execute();
         $connection->close();
     }
 }
