@@ -41,10 +41,10 @@ class Anonymizer
                     ->getSQL()
                 ;
                 $fetchRowsStmt = $connection->prepare($fetchRowsSQL);
-                $result = $fetchRowsStmt->execute();
+                $result = $fetchRowsStmt->executeQuery();
 
                 // Anonymize all rows in current target table.
-                while ($row = $result->fetch()) {
+                while (($row = $result->fetchAssociative()) !== false) {
                     $values = [];
                     // Anonymize all target fields in current row.
                     foreach ($targetTable->getTargetFields() as $targetField) {
