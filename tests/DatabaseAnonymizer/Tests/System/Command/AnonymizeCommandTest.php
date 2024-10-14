@@ -23,7 +23,7 @@ class AnonymizeCommandTest extends TestCase
      * @inheritdoc
      * @throws \Doctrine\DBAL\DBALException
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->regenerateUsersOrders();
     }
