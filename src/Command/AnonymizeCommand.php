@@ -60,7 +60,7 @@ class AnonymizeCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $questionHelper = $this->getHelper('question');
         $question = new ConfirmationQuestion('Are you sure you want to anonymize your database?', false);
