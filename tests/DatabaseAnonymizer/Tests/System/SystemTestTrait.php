@@ -18,7 +18,7 @@ trait SystemTestTrait
      *
      * @return Connection
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     private function getConnection(bool $toDatabase = true): Connection
     {
@@ -42,7 +42,7 @@ trait SystemTestTrait
      * @param string $url
      * @param string $name
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function regenerateUsersOrders(): void
     {

@@ -13,7 +13,7 @@ class YamlAnonymizerLoader extends FileLoader
     /**
      * {@inheritdoc}
      */
-    public function load($resource, $type = null)
+    public function load(mixed $resource, ?string $type = null): mixed
     {
         return Yaml::parse(file_get_contents($resource));
     }
@@ -21,7 +21,7 @@ class YamlAnonymizerLoader extends FileLoader
     /**
      * {@inheritdoc}
      */
-    public function supports($resource, $type = null)
+    public function supports(mixed $resource, ?string $type = null): bool
     {
         return \is_string($resource) && 'yaml' === pathinfo($resource, PATHINFO_EXTENSION);
     }

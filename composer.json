@@ -17,8 +17,8 @@
         "symfony/dependency-injection": "^4.2|^5.0|^6.0|^7.0"
     },
     "require-dev": {
-        "matthiasnoback/symfony-dependency-injection-test": "^4.3",
-        "phpunit/phpunit": "^9.3",
+        "matthiasnoback/symfony-dependency-injection-test": "^4.3|^6.0",
+        "phpunit/phpunit": "^9.3|^10.5",
         "symfony/config": "^4.2|^5.0|^6.0|^7.0",
         "symfony/yaml": "^4.2|^5.0|^6.0|^7.0"
     },

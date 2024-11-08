@@ -18,7 +18,7 @@ class Anonymizer
      * @param Connection $connection
      * @param TargetTable[] $targets
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function anonymize(Connection $connection, array $targets)
     {
