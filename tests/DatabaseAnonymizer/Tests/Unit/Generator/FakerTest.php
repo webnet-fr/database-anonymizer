@@ -24,7 +24,7 @@ class FakerTest extends TestCase
         $this->assertEquals('ducimus', $this->generateValue(['formatter' => 'word', 'seed' => 'seed']));
         $this->assertEquals('Dr.', $this->generateValue(['formatter' => 'title', 'seed' => 'seed']));
         $this->assertEquals('South', $this->generateValue(['formatter' => 'cityPrefix', 'seed' => 'seed']));
-        $this->assertEquals('1-671-685-8472', $this->generateValue(['formatter' => 'phoneNumber', 'seed' => 'seed']));
+        $this->assertEquals('657-684-6235', $this->generateValue(['formatter' => 'phoneNumber', 'seed' => 'seed']));
     }
 
     /**

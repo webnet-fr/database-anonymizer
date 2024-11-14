@@ -47,9 +47,8 @@ class AnonymizerTest extends TestCase
             ->getSQL();
 
         $selectStmt = $connection->prepare($selectSQL);
-        $selectStmt->execute();
-
-        while ($row = $selectStmt->fetch()) {
+        $result = $selectStmt->execute();
+        while ($row = $result->fetchAssociative()) {
             $this->assertTrue(is_string($row['firstname']));
             $this->assertTrue(is_string($row['lastname']));
             $this->assertTrue(is_string($row['birthdate']));
@@ -74,8 +73,8 @@ class AnonymizerTest extends TestCase
             ->from('users', 'u')
             ->getSQL();
         $selectStmt = $connection->prepare($selectSQL);
-        $selectStmt->execute();
-        $result = $selectStmt->fetch();
+        $users = $selectStmt->execute();
+        $result = $users->fetchAssociative();
         $this->assertEquals(0, current($result));
 
         $selectSQL = $connection->createQueryBuilder()
@@ -83,8 +82,8 @@ class AnonymizerTest extends TestCase
             ->from('orders', 'o')
             ->getSQL();
         $selectStmt = $connection->prepare($selectSQL);
-        $selectStmt->execute();
-        $result = $selectStmt->fetch();
+        $orders = $selectStmt->execute();
+        $result = $orders->fetchAssociative();
         $this->assertEquals(0, current($result));
 
         $selectSQL = $connection->createQueryBuilder()
@@ -92,8 +91,14 @@ class AnonymizerTest extends TestCase
             ->from('productivity', 'p')
             ->getSQL();
         $selectStmt = $connection->prepare($selectSQL);
-        $selectStmt->execute();
-        $result = $selectStmt->fetch();
+        $productivity = $selectStmt->execute();
+        $result = $productivity->fetchAssociative();
         $this->assertEquals(0, current($result));
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $this->getConnection()->close();
     }
 }

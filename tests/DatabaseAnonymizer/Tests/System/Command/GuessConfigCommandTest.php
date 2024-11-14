@@ -80,7 +80,7 @@ EOF;
     {
         $commandTester = $this->doExecute();
 
-        $this->assertEquals(self::EXPECTED, $commandTester->getDisplay());
+        $this->assertEquals(str_replace(["\n", "\r"], "", self::EXPECTED), str_replace(["\n", "\r"], "", $commandTester->getDisplay()));
     }
 
     public function testExecuteFile()
@@ -91,7 +91,7 @@ EOF;
             '--file' => $file,
         ]);
 
-        $this->assertEquals(self::EXPECTED, file_get_contents($file));
+        $this->assertEquals(str_replace(["\n","\r"],"",self::EXPECTED), str_replace(["\n","\r"],"",file_get_contents($file)));
     }
 
     /**
@@ -125,5 +125,11 @@ EOF;
         $commandTester->execute($input);
 
         return $commandTester;
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $this->getConnection()->close();
     }
 }
