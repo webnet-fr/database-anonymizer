@@ -21,7 +21,7 @@ trait AnonymizeCommandTrait
     /**
      * @param InputInterface $input
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      *
      * @return Connection|null
      */
@@ -51,7 +51,7 @@ trait AnonymizeCommandTrait
     /**
      * @param array $params
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      *
      * @return Connection
      */

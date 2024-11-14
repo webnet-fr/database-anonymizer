@@ -46,7 +46,7 @@ class WebnetFrDatabaseAnonymizerExtensionTest extends AbstractExtensionTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getContainerExtensions() : array
+    protected function getContainerExtensions(): array
     {
         return [
             new WebnetFrDatabaseAnonymizerExtension(),
