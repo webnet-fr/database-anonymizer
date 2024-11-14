@@ -10,8 +10,6 @@ use Symfony\Component\Yaml\Yaml;
 class ConfigWriter
 {
     /**
-     * @var array
-     *
      * @return string
      */
     public function write(array $hints)

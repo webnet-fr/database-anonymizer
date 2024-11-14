@@ -45,6 +45,6 @@ class ChainGeneratorFactory implements GeneratorFactoryInterface
             }
         }
 
-        throw new UnsupportedGeneratorException($config['generator'].' generator is not known');
+        throw new UnsupportedGeneratorException($config['generator'] . ' generator is not known');
     }
 }

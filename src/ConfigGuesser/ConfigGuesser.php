@@ -50,7 +50,7 @@ class ConfigGuesser
     public static function guess(Connection $connection)
     {
         $hints = [];
-        $sm = $connection->getSchemaManager();
+        $sm = $connection->createSchemaManager();
 
         foreach ($sm->listTables() as $table) {
             $tableName = $table->getName();

@@ -15,7 +15,7 @@ use WebnetFr\DatabaseAnonymizer\Generator\GeneratorInterface;
  */
 class FakerGeneratorFactory extends Factory implements GeneratorFactoryInterface
 {
-    const DEFAULT_LOCALE = 'en_US';
+    public const DEFAULT_LOCALE = 'en_US';
 
     /**
      * {@inheritdoc}
@@ -24,7 +24,7 @@ class FakerGeneratorFactory extends Factory implements GeneratorFactoryInterface
     {
         $generatorKey = $config['generator'];
         if ('faker' !== $generatorKey) {
-            throw new UnsupportedGeneratorException($generatorKey.' generator is not known');
+            throw new UnsupportedGeneratorException($generatorKey . ' generator is not known');
         }
 
         $formatter = $config['formatter'] ?? null;

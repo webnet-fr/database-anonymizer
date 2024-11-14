@@ -48,7 +48,8 @@ class TargetTable
     {
         if ($truncate && $targetFields) {
             throw new \InvalidArgumentException(sprintf(
-                'Invalid configuration of %s. Table can be either anonymized or truncated.', TargetTable::class
+                'Invalid configuration of %s. Table can be either anonymized or truncated.',
+                TargetTable::class
             ));
         }
 

@@ -22,7 +22,7 @@ class WebnetFrDatabaseAnonymizerExtension extends Extension
             ->addTag('database_anonymizer.generator_factory')
         ;
 
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
     }
 }

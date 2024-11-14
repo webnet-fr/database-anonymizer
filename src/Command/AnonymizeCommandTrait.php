@@ -29,7 +29,8 @@ trait AnonymizeCommandTrait
     {
         if ($dbURL = $input->getOption('url')) {
             return $this->getConnection(['url' => $dbURL]);
-        } elseif (($type = $input->getOption('type'))
+        } elseif (
+            ($type = $input->getOption('type'))
             && ($host = $input->getOption('host'))
             && ($port = $input->getOption('port'))
             && ($database = $input->getOption('database'))

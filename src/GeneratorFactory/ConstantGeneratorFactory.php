@@ -19,7 +19,7 @@ class ConstantGeneratorFactory implements GeneratorFactoryInterface
     public function getGenerator(array $config): GeneratorInterface
     {
         if ('constant' !== $config['generator']) {
-            throw new UnsupportedGeneratorException($config['generator'].' generator is not known');
+            throw new UnsupportedGeneratorException($config['generator'] . ' generator is not known');
         }
 
         return new Constant($config['value']);

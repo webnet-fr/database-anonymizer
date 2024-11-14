@@ -47,7 +47,7 @@ trait SystemTestTrait
     public function regenerateUsersOrders(): void
     {
         $connection = $this->getConnection(false);
-        $schemaManager = $connection->getSchemaManager();
+        $schemaManager = $connection->createSchemaManager();
 
         try {
 
@@ -55,8 +55,8 @@ trait SystemTestTrait
         $connection->close();
 
         $connection = $this->getConnection();
-        $schemaManager = $connection->getSchemaManager();
-        $schema = $schemaManager->createSchema();
+        $schemaManager = $connection->createSchemaManager();
+        $schema = $schemaManager->introspectSchema();
 
         $user = $schema->createTable('users');
         $user->addColumn('id', 'integer', ['unsigned' => true]);
@@ -132,7 +132,7 @@ trait SystemTestTrait
     {
         $connection = $this->getConnection();
 
-        $connection->createQueryBuilder()->delete($table)->execute();
+        $connection->createQueryBuilder()->delete($table)->executeStatement();
         $connection->close();
     }
 }

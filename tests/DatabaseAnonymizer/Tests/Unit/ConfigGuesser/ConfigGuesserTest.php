@@ -1,6 +1,6 @@
 <?php
 
-namespace DatabaseAnonymizer\Tests\Unit\ConfigGuesser;
+namespace WebnetFr\DatabaseAnonymizer\Tests\Unit\ConfigGuesser;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
@@ -58,7 +58,7 @@ class ConfigGuesserTest extends TestCase
         $schemaManager->method('listTables')->willReturn([$table]);
 
         $connection = $this->createMock(Connection::class);
-        $connection->method('getSchemaManager')->willReturn($schemaManager);
+        $connection->method('createSchemaManager')->willReturn($schemaManager);
 
         $config = ConfigGuesser::guess($connection);
         $this->assertTrue(is_array($config));

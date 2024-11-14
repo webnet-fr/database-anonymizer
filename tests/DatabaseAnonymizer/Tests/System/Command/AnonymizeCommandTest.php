@@ -112,7 +112,7 @@ class AnonymizeCommandTest extends TestCase
             ->from('users', 'u')
             ->getSQL();
         $selectStmt = $connection->prepare($selectSQL);
-        $orders = $selectStmt->execute();
+        $orders = $selectStmt->executeQuery();
         $result = $orders->fetchAssociative();
         $this->assertEquals(0, current($result));
 
@@ -121,7 +121,7 @@ class AnonymizeCommandTest extends TestCase
             ->from('orders', 'o')
             ->getSQL();
         $selectStmt = $connection->prepare($selectSQL);
-        $orders = $selectStmt->execute();
+        $orders = $selectStmt->executeQuery();
         $result = $orders->fetchAssociative();
         $this->assertEquals(0, current($result));
 
@@ -130,7 +130,7 @@ class AnonymizeCommandTest extends TestCase
             ->from('productivity', 'p')
             ->getSQL();
         $selectStmt = $connection->prepare($selectSQL);
-        $orders = $selectStmt->execute();
+        $orders = $selectStmt->executeQuery();
         $result = $orders->fetchAssociative();
         $this->assertEquals(0, current($result));
     }
