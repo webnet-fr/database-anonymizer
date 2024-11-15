@@ -27,10 +27,10 @@ class Anonymizer
         foreach ($targets as $targetTable) {
             if ($targetTable->isTruncate()) {
                 $dbPlatform = $connection->getDatabasePlatform();
-                ($GLOBALS['db_type'] === self::PDO_PGSQL) ? $connection->query('set session_replication_role = replica;') : $connection->query('SET FOREIGN_KEY_CHECKS=0');
+                ($GLOBALS['db_type'] === self::PDO_PGSQL) ? $connection->executeQuery('set session_replication_role = replica;') : $connection->executeQuery('SET FOREIGN_KEY_CHECKS=0');
                 $truncateQuery = $dbPlatform->getTruncateTableSql($targetTable->getName(), true);
                 $connection->executeStatement($truncateQuery);
-                ($GLOBALS['db_type'] === self::PDO_PGSQL) ? $connection->query('SET session_replication_role = origin;') : $connection->query('SET FOREIGN_KEY_CHECKS=1');
+                ($GLOBALS['db_type'] === self::PDO_PGSQL) ? $connection->executeQuery('SET session_replication_role = origin;') : $connection->executeQuery('SET FOREIGN_KEY_CHECKS=1');
             } else {
                 $allFieldNames = $targetTable->getAllFieldNames();
                 $pk = $targetTable->getPrimaryKey();
